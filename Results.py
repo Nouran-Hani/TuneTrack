@@ -1,75 +1,128 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, \
-    QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, QPushButton
 
 
 class ResultCard(QWidget):
-    def __init__(self):
+    def __init__(self, songName = "Song Name" , singerName = "singer Name", similarity = 22):
         super().__init__()
-        self.initializeAttribute()
-        self.initializeUI()
+        self.initializeUI( songName  , singerName , similarity)
         self.connectUI()
 
-    def initializeAttribute(self):
-        print(" initializeAttribute Done")
-
-    def initializeUI(self):
-        self.createUiElements()
+    def initializeUI(self, songName  , singerName , similarity):
+        self.createUiElements( songName  , singerName , similarity)
         self.createLayout()
         self.styleUi()
         print(" initializeUi Done")
 
-    def createUiElements(self):
+    def createUiElements(self, songName  , singerName , similarity):
         self.cover = QPushButton()
-        self.cover.setIcon(QIcon("Photos/placeholder98.jpeg"))
-        self.cover.setIconSize(self.cover.sizeHint())  # Adjust the size of the icon based on button size
-        self.cover.setFlat(True)  # Make the button flat so it appears like a label
 
-        self.songName = QLabel("Song Name")
-        self.singerName = QLabel("singer lil Name")
-        self.similarity = QProgressBar()
-        self.playButton = QPushButton(">")
+        self.songName = QLabel(songName)
+        self.singerName = QLabel(singerName)
+        self.similarityBar = QProgressBar()
+        self.similarityBar.setMinimum(0)
+        self.similarityBar.setMaximum(100)
+        self.similarityBar.setValue(similarity)  # passed value
+        self.similarityResult = QLabel(f"{similarity}%")
+        self.playButton = QPushButton(QIcon("Photos/Button Play.png"),"")
         print(" UI elements created Done")
-
 
     def createLayout(self):
         self.mainLayout = QHBoxLayout()
-        details = QVBoxLayout()
-        details.addWidget(self.songName)
-        details.addWidget(self.singerName)
-        details.addWidget(self.similarity)
+        cardBody = QVBoxLayout()
+        details = QHBoxLayout()
+        songDetails = QVBoxLayout()
 
-        self.mainLayout.addWidget(self.cover,10)
-        self.mainLayout.addLayout(details,30)
-        self.mainLayout.addWidget(self.playButton,5)
+        songDetails.addWidget(self.songName)
+        songDetails.addWidget(self.singerName)
+        songDetails.addStretch()
+        details.addLayout(songDetails)
+        details.addWidget(self.similarityResult)
+
+        cardBody.addLayout(details)
+        cardBody.addWidget(self.similarityBar)
+
+        self.mainLayout.addWidget(self.cover, 10)
+        self.mainLayout.addLayout(cardBody, 30)
+        self.mainLayout.addWidget(self.playButton, 5)
 
         self.setLayout(self.mainLayout)
-
 
         print(" UI Layout Done")
 
     def styleUi(self):
-        # self.similarity.setOrientation(Qt.Vertical)  # Set orientation to vertical
-        self.similarity.setMinimum(0)  # Minimum value
-        self.similarity.setMaximum(100)  # Maximum value
-        self.similarity.setValue(50)  # passed value
+        self.mainColor = "red"
+        self.accentColor = "blue"
+        self.cover.setStyleSheet("background-color: red;")
+
+        self.songName.setStyleSheet(f"""
+                QLabel {{
+                    color: {self.mainColor};
+                    font-family: 'Roboto';
+                    font-weight: semiBold;
+                    font-size: 20px;
+                }}
+            """)
+        self.singerName.setStyleSheet(f"""
+                        QLabel {{
+                            color: {self.accentColor};
+                            font-family: 'Roboto';
+                            font-weight: semiBold;
+                            font-size: 12px;
+                        }}
+                    """)
+
+        self.similarityResult.setStyleSheet(f"""
+                        QLabel {{
+                            color: {self.accentColor};
+                            font-family: 'Roboto';
+                            font-weight: semiBold;
+                            font-size: 25px;
+                        }}
+                    """)
+
+        self.similarityResult.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+
+
+        self.similarityBar.setStyleSheet("""
+              QProgressBar {
+                  min-height: 12px;
+                  max-height: 12px;
+                  border-radius: 6px;
+                  color:red;
+                  background-color:blue;
+              }
+              QProgressBar::chunk {
+                  border-radius: 6px;
+                  background-color: #009688;  # Set chunk color
+              }
+          """)
+
+        self.similarityBar.setFormat("")  # This will remove the text from the QProgressBar
+        self.playButton.setFlat(True)
 
         print(" UI Styled Done")
 
     def connectUI(self):
         print(" UI Connection Done")
 
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        size = self.cover.width()  # Use height as the reference
+        self.cover.setFixedSize(size, size)
+        self.playButton.setFixedSize(int(size*.75), int(size*.75))
+        print(" resizeEvent called, cover size adjusted")
+
+
 if __name__ == "__main__":
-        import sys
+    import sys
 
-        app = QApplication(sys.argv)
-        mainWindow = QMainWindow()
-        resultCard = ResultCard()  # Create an instance of your custom widget
-        mainWindow.setCentralWidget(resultCard)  # Set your widget as the central widget of the main window
-        mainWindow.setWindowTitle("Result Card Demo")
-        mainWindow.resize(400, 100)  # Adjust the window size as needed
-        mainWindow.show()
-        sys.exit(app.exec_())
-
-
+    app = QApplication(sys.argv)
+    mainWindow = QMainWindow()
+    resultCard = ResultCard()
+    mainWindow.setCentralWidget(resultCard)
+    mainWindow.setWindowTitle("Result Card Demo")
+    mainWindow.resize(400, 100)
+    mainWindow.show()
+    sys.exit(app.exec_())
