@@ -32,8 +32,8 @@ class AudioPlayerApp(QMainWindow):
         main_layout.addLayout(playback_layout)
         playback_layout.addWidget(self.playback_widget)
 
-        self.setWindowTitle("Audio Player")
-        self.resize(600, 100)
+        self.setWindowTitle("Shazam")
+      
 
     def connectUI(self):
         self.AudioCard1.upload_button.clicked.connect(

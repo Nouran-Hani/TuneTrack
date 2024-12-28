@@ -1,11 +1,13 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QStyle
 from PyQt5.QtCore import pyqtSignal, Qt, QUrl, QTimer, QSize
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from style import cardStyle, songName, uploadButton, circleButton
 from PyQt5.QtGui import QIcon
 
 
 class AudioCardUpload(QWidget):
     mute_toggled = pyqtSignal(bool)
+    audio_replaced = pyqtSignal()
 
     def __init__(self, title: str):
         super().__init__()
@@ -18,6 +20,7 @@ class AudioCardUpload(QWidget):
     def initializeParameters(self):
         self.player = None
         self.is_muted = False
+        self.file_path = None 
 
     def createUiElements(self):
         main_layout = QVBoxLayout(self)
@@ -65,8 +68,16 @@ class AudioCardUpload(QWidget):
             self, "Upload Audio File", "", "Audio Files (*.mp3 *.wav)"
         )
         if file_name:
+            current_file_path = self.file_path
             self.audio_name_label.setText(file_name.split('/')[-1])
-            self.file_path = file_name 
+            self.file_path = file_name
+            
+            if self.player:
+                self.player.stop()
+                self.player.setMedia(QMediaContent(QUrl.fromLocalFile(file_name)))
+            
+            if current_file_path is not None:
+                self.audio_replaced.emit()
 
     def connect_player(self, player):
         self.player = player

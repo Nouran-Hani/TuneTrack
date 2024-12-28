@@ -8,7 +8,6 @@ class AudioCardPlayback(QWidget):
     def __init__(self):
         super().__init__()
         self.initializeParameters()
-
         self.initializeUi()
         self.styleUi()
 
@@ -18,12 +17,12 @@ class AudioCardPlayback(QWidget):
         self.timer = QTimer(self)
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.update_progress)
+        self.was_playing = False
 
     def initializeUi(self):
         self.createUIElements()
         self.connectingUI()
     
-
     def createUIElements(self):
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(0, 0, 0, 0)  
@@ -68,10 +67,20 @@ class AudioCardPlayback(QWidget):
     def add_audio(self, uploader):
         file_path = uploader.get_file()
         if file_path:
+            self.was_playing = self.timer.isActive()
+            
+            if uploader.player in self.players:
+                self.players.remove(uploader.player)
+            
             player = QMediaPlayer()
             player.setMedia(QMediaContent(QUrl.fromLocalFile(file_path)))
             self.players.append(player)
             uploader.connect_player(player)
+            
+            uploader.audio_replaced.connect(self.restart_playback)
+            
+            if self.was_playing:
+                self.restart_playback()
 
     def toggle_mute(self, is_muted):
         for player in self.players:
@@ -95,11 +104,14 @@ class AudioCardPlayback(QWidget):
             for player in self.players:
                 player.pause()
             self.timer.stop()
-            
+            self.was_playing = False
         else:
+            current_pos = self.progress.value()
             for player in self.players:
+                player.setPosition(current_pos)
                 player.play()
             self.timer.start()
+            self.was_playing = True
             
 
     def stop_playback(self):
@@ -108,6 +120,20 @@ class AudioCardPlayback(QWidget):
         self.timer.stop()
         self.progress.setValue(0)
         self.time_label.setText("0:00")
+
+    def restart_playback(self):
+        self.timer.stop()
+        for player in self.players:
+            player.stop()
+        
+        self.progress.setValue(0)
+        self.time_label.setText("0:00")
+        
+        for player in self.players:
+            player.setPosition(0)
+            player.play()
+        
+        self.timer.start()
 
     @staticmethod
     def format_time(ms):
