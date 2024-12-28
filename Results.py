@@ -4,20 +4,20 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHB
 
 
 class ResultCard(QWidget):
-    def __init__(self, songName = "Song Name" , singerName = "singer Name", similarity = 22):
+    def __init__(self,rank = "1", songName = "Song Name" , singerName = "singer Name", similarity = 22):
         super().__init__()
-        self.initializeUI( songName  , singerName , similarity)
+        self.initializeUI( rank, songName  , singerName , similarity)
         self.connectUI()
 
-    def initializeUI(self, songName  , singerName , similarity):
-        self.createUiElements( songName  , singerName , similarity)
+    def initializeUI(self, rank , songName  , singerName , similarity):
+        self.createUiElements(rank, songName  , singerName , similarity)
         self.createLayout()
         self.styleUi()
         print(" initializeUi Done")
 
-    def createUiElements(self, songName  , singerName , similarity):
+    def createUiElements(self,rank,songName  , singerName , similarity):
+        self.rank = QLabel(rank)
         self.cover = QPushButton()
-
         self.songName = QLabel(songName)
         self.singerName = QLabel(singerName)
         self.similarityBar = QProgressBar()
@@ -43,6 +43,7 @@ class ResultCard(QWidget):
         cardBody.addLayout(details)
         cardBody.addWidget(self.similarityBar)
 
+        self.mainLayout.addWidget(self.rank, 3)
         self.mainLayout.addWidget(self.cover, 10)
         self.mainLayout.addLayout(cardBody, 30)
         self.mainLayout.addWidget(self.playButton, 5)
@@ -54,8 +55,21 @@ class ResultCard(QWidget):
     def styleUi(self):
         self.mainColor = "red"
         self.accentColor = "blue"
+
+        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setStyleSheet("background-color:#EFEFEF;")
+
         self.cover.setStyleSheet("background-color: red;")
 
+        self.rank.setAlignment(Qt.AlignCenter | Qt.AlignCenter)
+        self.rank.setStyleSheet(f"""
+                QLabel {{
+                    color: {self.mainColor};
+                    font-family: 'Roboto';
+                    font-weight: semiBold;
+                    font-size: 25px;
+                }}
+            """)
         self.songName.setStyleSheet(f"""
                 QLabel {{
                     color: {self.mainColor};
