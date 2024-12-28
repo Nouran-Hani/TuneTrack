@@ -77,7 +77,7 @@ class ResultCard(QWidget):
             QLabel {{
                 color: {self.mainColor};
                 font-family: 'Roboto';
-                font-weight: semiBold;
+                font-weight: Bold;
                 font-size: 25px;
                 border: 1px solid #FF0000;
                 padding: 5px;

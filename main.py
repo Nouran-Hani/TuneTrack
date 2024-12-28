@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, \
+    QSpacerItem
 from audio_card_upload import AudioCardUpload
 from audio_card_playback import AudioCardPlayback
 from Results import ResultCard
@@ -16,18 +18,29 @@ class AudioPlayerApp(QMainWindow):
 
 
     def createUiElements(self):
+        self.logo = QLabel("WTS")
+        self.slogan = QLabel("|What The Song!")
+
         self.audioCard1 = AudioCardUpload("Audio 1")
         self.audioCard2 = AudioCardUpload("Audio 2")
         self.playback_widget = AudioCardPlayback()
 
+
+        self.bestMatchLabel = QLabel("Best Match")
+        # should be in function
         self.bestMatchCard = ResultCard()
-        self.MatchCard1 = ResultCard()
-        self.MatchCard2 = ResultCard()
-        self.MatchCard3 = ResultCard()
-        self.MatchCard4 = ResultCard()
+        self.MatchCard1 = ResultCard("2")
+        self.MatchCard2 = ResultCard("3")
+        self.MatchCard3 = ResultCard("4")
+        self.MatchCard4 = ResultCard("5")
 
     def createLayout(self):
         self.mainLayout = QVBoxLayout()
+
+        logoLayout = QHBoxLayout()
+        logoLayout.addWidget(self.logo)
+        logoLayout.addWidget(self.slogan)
+        logoLayout.addStretch()
 
         uploadLayout = QHBoxLayout()
 
@@ -37,6 +50,7 @@ class AudioPlayerApp(QMainWindow):
         uploadLayout.addStretch()
 
         playbackLayout = QHBoxLayout()
+
         playbackLayout.addWidget(self.playback_widget)
 
         bestMatchLayout = QHBoxLayout()
@@ -57,9 +71,12 @@ class AudioPlayerApp(QMainWindow):
         resultsRow.addLayout(resultsLayout)
         resultsRow.addStretch()
 
-        self.mainLayout.addLayout(uploadLayout,25)
+        self.mainLayout.addLayout(logoLayout,5)
+        self.mainLayout.addSpacerItem(QSpacerItem(20, 40))
+        self.mainLayout.addLayout(uploadLayout,20)
         self.mainLayout.addLayout(playbackLayout,25)
-        self.mainLayout.addLayout(bestMatchLayout,25)
+        self.mainLayout.addWidget(self.bestMatchLabel,3)
+        self.mainLayout.addLayout(bestMatchLayout,22)
         self.mainLayout.addLayout(resultsRow,20)
 
         centralWidget = QWidget()
@@ -69,6 +86,34 @@ class AudioPlayerApp(QMainWindow):
 
 
     def styleUi(self):
+        self.logo.setStyleSheet("""
+            QLabel {
+                font-family: 'Roboto';
+                font-weight: Bold;
+                font-size: 50px;
+                padding-left: 10px;
+                border: none;
+            }
+        """)
+        self.slogan.setStyleSheet("""
+            QLabel {
+                font-family: 'Roboto';
+                font-weight: Bold;
+                font-size: 20px;
+                border: none;
+            }
+        """)
+        self.bestMatchLabel.setAlignment(Qt.AlignCenter)
+        self.bestMatchLabel.setStyleSheet("""
+            QLabel {
+                font-family: 'Roboto';
+                font-weight: Bold;
+                font-size: 30px;
+                padding: 5px;
+                border: none;
+            }
+        """)
+
         print("Style Done")
 
     def connectUI(self):
