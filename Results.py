@@ -53,8 +53,8 @@ class ResultCard(QWidget):
         self.setLayout(self.mainLayout)
 
     def styleUi(self):
-        self.mainColor = "red"
-        self.accentColor = "blue"
+        self.mainColor = "White"
+        self.accentColor = "Gray"
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setStyleSheet("background-color: #2d2d2d; border: 2px solid black; border-radius:12px;")
@@ -65,8 +65,8 @@ class ResultCard(QWidget):
         # Style for the cover button
         self.cover.setStyleSheet("""
             QPushButton {
-                background-color: red;
-                border: 1px solid #FF0000;
+                background-color: White;
+                border: 1px solid Gray;
                 border-radius: 10px;
             }
         """)
@@ -131,12 +131,12 @@ class ResultCard(QWidget):
                 min-height: 12px;
                 max-height: 12px;
                 border-radius: 6px;
-                border: 1px solid #EFEFEF;
-                background-color: #EFEFEF;
+                border: 1px solid Gray;
+                background-color: Gray;
             }
             QProgressBar::chunk {
                 border-radius: 6px;
-                background-color: #009688;
+                background-color: White;
             }
         """)
 

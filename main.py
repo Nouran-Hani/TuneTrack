@@ -28,8 +28,8 @@ class AudioPlayerApp(QMainWindow):
 
         self.bestMatchLabel = QLabel("Best Match")
         # should be in function
-        self.bestMatchCard = ResultCard()
-        self.MatchCard1 = ResultCard("2")
+        self.bestMatchCard = ResultCard("1", "Yarraab", "Tamora Remix", 55)
+        self.MatchCard1 = ResultCard("2", "Yarraab", "Tamora Remix", 55)
         self.MatchCard2 = ResultCard("3")
         self.MatchCard3 = ResultCard("4")
         self.MatchCard4 = ResultCard("5")
@@ -44,10 +44,8 @@ class AudioPlayerApp(QMainWindow):
 
         uploadLayout = QHBoxLayout()
 
-        uploadLayout.addStretch()
         uploadLayout.addWidget(self.audioCard1)
         uploadLayout.addWidget(self.audioCard2)
-        uploadLayout.addStretch()
 
         playbackLayout = QHBoxLayout()
 
@@ -72,9 +70,9 @@ class AudioPlayerApp(QMainWindow):
         resultsRow.addStretch()
 
         self.mainLayout.addLayout(logoLayout,5)
-        self.mainLayout.addSpacerItem(QSpacerItem(20, 40))
-        self.mainLayout.addLayout(uploadLayout,20)
-        self.mainLayout.addLayout(playbackLayout,25)
+        self.mainLayout.addSpacerItem(QSpacerItem(20, 10))
+        self.mainLayout.addLayout(uploadLayout,10)
+        self.mainLayout.addLayout(playbackLayout,35)
         self.mainLayout.addWidget(self.bestMatchLabel,3)
         self.mainLayout.addLayout(bestMatchLayout,22)
         self.mainLayout.addLayout(resultsRow,20)
