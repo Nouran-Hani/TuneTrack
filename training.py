@@ -12,7 +12,13 @@ class Training(Processing):
         audio_hash = self.compute_hash()
         new_data = {
             "title": self.title,
-            "hash": audio_hash
+            "zero crossing": self.zero_crossing,
+            "spectral banwidth": self.spectral_bandwidth,
+            "spectral centroid": self.spectral_centroid,
+            "spectral contrast": self.spectral_contrast,
+            "spectral flatness": float(self.spectral_flatness),
+            "mfccs": self.mfccs.tolist(),
+            "features": audio_hash
         }
 
         # Check if the file exists
