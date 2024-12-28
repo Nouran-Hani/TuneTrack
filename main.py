@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel
 from audio_card_upload import AudioCardUpload
 from audio_card_playback import AudioCardPlayback
+from Results import ResultCard
 
 class AudioPlayerApp(QMainWindow):
     def __init__(self):
@@ -9,37 +10,72 @@ class AudioPlayerApp(QMainWindow):
         self.connectUI()
 
     def initializeUI(self):
-        central_widget = QWidget(self)
-        self.setCentralWidget(central_widget)
+        self.createUiElements()
+        self.createLayout()
+        self.styleUi()
 
-        main_layout = QVBoxLayout(central_widget)
-        main_layout.setSpacing(15) 
 
-        upload_layout = QHBoxLayout()
-        upload_layout.setSpacing(15)  
-
-        playback_layout = QVBoxLayout()
-
-        self.AudioCard1 = AudioCardUpload("Audio 1")
-        self.AudioCard2 = AudioCardUpload("Audio 2")
-
-        upload_layout.addWidget(self.AudioCard1)
-        upload_layout.addWidget(self.AudioCard2)
-
+    def createUiElements(self):
+        self.audioCard1 = AudioCardUpload("Audio 1")
+        self.audioCard2 = AudioCardUpload("Audio 2")
         self.playback_widget = AudioCardPlayback()
 
-        main_layout.addLayout(upload_layout)
-        main_layout.addLayout(playback_layout)
-        playback_layout.addWidget(self.playback_widget)
+        self.bestMatchCard = ResultCard()
+        self.MatchCard1 = ResultCard()
+        self.MatchCard2 = ResultCard()
+        self.MatchCard3 = ResultCard()
+        self.MatchCard4 = ResultCard()
 
-        self.setWindowTitle("Shazam")
-      
+    def createLayout(self):
+        self.mainLayout = QVBoxLayout()
+
+        uploadLayout = QHBoxLayout()
+
+        uploadLayout.addStretch()
+        uploadLayout.addWidget(self.audioCard1)
+        uploadLayout.addWidget(self.audioCard2)
+        uploadLayout.addStretch()
+
+        playbackLayout = QHBoxLayout()
+        playbackLayout.addWidget(self.playback_widget)
+
+        bestMatchLayout = QHBoxLayout()
+        bestMatchLayout.addStretch()
+        bestMatchLayout.addWidget(self.bestMatchCard)
+        bestMatchLayout.addStretch()
+
+        resultsRow = QHBoxLayout()
+        resultsLayout = QGridLayout()
+        resultsLayout.addWidget(self.MatchCard1, 0, 0)
+        resultsLayout.addWidget(self.MatchCard2, 0, 1)
+        resultsLayout.addWidget(self.MatchCard3, 1, 0)
+        resultsLayout.addWidget(self.MatchCard4, 1, 1)
+
+        resultsLayout.setHorizontalSpacing(50)
+
+        resultsRow.addStretch()
+        resultsRow.addLayout(resultsLayout)
+        resultsRow.addStretch()
+
+        self.mainLayout.addLayout(uploadLayout,25)
+        self.mainLayout.addLayout(playbackLayout,25)
+        self.mainLayout.addLayout(bestMatchLayout,25)
+        self.mainLayout.addLayout(resultsRow,20)
+
+        centralWidget = QWidget()
+        centralWidget.setLayout(self.mainLayout)
+        self.setCentralWidget(centralWidget)
+
+
+
+    def styleUi(self):
+        print("Style Done")
 
     def connectUI(self):
-        self.AudioCard1.upload_button.clicked.connect(
+        self.audioCard1.upload_button.clicked.connect(
             lambda: self.playback_widget.add_audio(self.AudioCard1)
         )
-        self.AudioCard2.upload_button.clicked.connect(
+        self.audioCard2.upload_button.clicked.connect(
             lambda: self.playback_widget.add_audio(self.AudioCard2)
         )
 
