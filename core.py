@@ -5,7 +5,7 @@ class Core():
     def spectro(self):
         print("spectro")
 
-    def features():
+    def features(self):
         pass
 
     def get_spectro(self):
