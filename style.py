@@ -17,7 +17,6 @@ uploadButton = """
 QPushButton {
     background-color: #FFFFFF;
     color: #000000;
-    border-radius:20px;
     font-size: 14px;
     border-radius: 20px;
     padding: 5px 15px;

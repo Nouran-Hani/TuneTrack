@@ -56,6 +56,9 @@ class AudioCardPlayback(QWidget):
 
     def connectingUI(self):
         self.play_button.clicked.connect(self.toggle_playback)
+        self.progress.sliderPressed.connect(self.pausePlaybackWhileDragging)
+        self.progress.sliderReleased.connect(self.resumePlaybackAfterDragging)
+        self.progress.valueChanged.connect(self.updateTimeDisplay)
 
     def styleUi(self):
         self.play_button.setStyleSheet(circleButton) 
@@ -98,6 +101,29 @@ class AudioCardPlayback(QWidget):
 
         if max_position >= self.max_duration:
             self.stop_playback()
+
+    def pausePlaybackWhileDragging(self):
+        self.timer.stop()
+        self.was_playing = any(player.state() == QMediaPlayer.PlayingState for player in self.players)
+        for player in self.players:
+            player.pause()
+
+    def resumePlaybackAfterDragging(self):
+        position = self.progress.value()
+        for player in self.players:
+            player.setPosition(position)
+        
+        if self.was_playing:
+            for player in self.players:
+                player.play()
+            self.timer.start()
+
+    def updateTimeDisplay(self, value):
+        self.time_label.setText(self.format_time(value))
+        if not self.progress.isSliderDown():
+            for player in self.players:
+                if abs(player.position() - value) > 500:
+                    player.setPosition(value)
 
     def toggle_playback(self):
         if any(player.state() == QMediaPlayer.PlayingState for player in self.players):
