@@ -1,9 +1,11 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, \
     QSpacerItem
-from audio_card_upload import AudioCardUpload
-from audio_card_playback import AudioCardPlayback
-from Results import ResultCard
+from TuneTrack.gui.audio_card_upload import AudioCardUpload
+from TuneTrack.gui.audio_card_playback import AudioCardPlayback
+from TuneTrack.gui.Results import ResultCard
+from core.load import Load
+from core.audio_processing import Processing
 
 class AudioPlayerApp(QMainWindow):
     def __init__(self):
@@ -15,7 +17,6 @@ class AudioPlayerApp(QMainWindow):
         self.createUiElements()
         self.createLayout()
         self.styleUi()
-
 
     def createUiElements(self):
         self.logo = QLabel("WTS")
@@ -116,10 +117,10 @@ class AudioPlayerApp(QMainWindow):
 
     def connectUI(self):
         self.audioCard1.upload_button.clicked.connect(
-            lambda: self.playback_widget.add_audio(self.AudioCard1)
+            lambda: self.playback_widget.add_audio(self.audioCard1)
         )
         self.audioCard2.upload_button.clicked.connect(
-            lambda: self.playback_widget.add_audio(self.AudioCard2)
+            lambda: self.playback_widget.add_audio(self.audioCard2)
         )
 
 if __name__ == "__main__":

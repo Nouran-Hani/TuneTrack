@@ -1,22 +1,19 @@
 import librosa
 import numpy as np
-import librosa.display
-import hashlib
-import imagehash
-from PIL import Image
+# import librosa.display
 
 class Processing:
-    def __init__(self, audio_path,title):
+    def __init__(self, audio, title, sr):
         """
         Initializes the AudioFeatures class and computes various features.
         
         :param audio_path: Path to the audio file.
         """
-        self.audio_path = audio_path
-        self.x, self.sr = librosa.load(audio_path)
         self.title=title
+        self.sr = sr
+        self.audio = audio
 
-        self.spectrogram = np.abs(librosa.stft(self.x, n_fft=1024, hop_length=512))
+        self.spectrogram = np.abs(librosa.stft(self.audio, n_fft=1024, hop_length=512))
         
         # Initialize feature variables
         self.zero_crossing = 0
@@ -50,35 +47,19 @@ class Processing:
             librosa.feature.mfcc(S=librosa.power_to_db(self.spectrogram**2), sr=self.sr),
             axis=1,
         )
-
-        # debug
-    #     self.print_features()
-  
-    # def print_features(self):
-    #     """
-    #     Print the computed features in a readable format.
-    #     """
-    #     print(f"Features for {self.title}:")
-    #     print(f"  Spectral Bandwidth: {self.spectral_bandwidth:.2f}")
-    #     print(f"  Spectral Centroid: {self.spectral_centroid:.2f}")
-    #     print(f"  Spectral Contrast: {self.spectral_contrast:.2f}")
-    #     print(f"  Spectral Flatness: {self.spectral_flatness:.2f}")
-    #     print(f"  MFCCs: {self.mfccs}")
-    #     print()
+        self.compute_feature_vector()
 
     def compute_feature_vector(self):
-        feature_vector = [
+        self.feature_vector = [
             self.spectral_bandwidth,
             self.spectral_centroid,
             self.spectral_contrast,
             self.spectral_flatness,
             *self.mfccs,  # Unpack MFCCs into the vector
         ]
-        return feature_vector
     
-    def compute_hash(self):
+    def compute_hash(self, feature_vector):
         # Normalize the feature vector
-        feature_vector = self.compute_feature_vector()
 
         feature_vector = np.array(feature_vector)
         feature_vector = (feature_vector - np.min(feature_vector)) / (np.max(feature_vector) - np.min(feature_vector) + 1e-10)

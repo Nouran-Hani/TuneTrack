@@ -1,6 +1,39 @@
 [
     {
         "title": "Group10_wen_elkhael [music]",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffeffff0e01fe63f0003030e5c000200000000000000006020030000000000000000000000000000",
+        "zero crossing": 0,
+        "spectral banwidth": 1941.550509912237,
+        "spectral centroid": 1651.1758378180784,
+        "spectral contrast": 22.129392368379897,
+        "spectral flatness": 0.011542771011590958,
+        "mfccs": [
+            -513.48046875,
+            178.8460235595703,
+            65.08519744873047,
+            48.869300842285156,
+            14.561915397644043,
+            31.371417999267578,
+            -0.577060341835022,
+            17.37397003173828,
+            1.556752324104309,
+            0.6826087832450867,
+            -1.0470479726791382,
+            2.3301007747650146,
+            -9.663176536560059,
+            3.4587533473968506,
+            -12.860475540161133,
+            0.578791081905365,
+            -2.6731600761413574,
+            4.913242340087891,
+            4.350211143493652,
+            10.867507934570312
+        ],
+        "features": "e7d007"
+    },
+    {
+        "title": "Group10_wen_elkhael [music]",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffeffff0e01fe63f0003030e5c000200000000000000006020030000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1941.550509912237,
         "spectral centroid": 1651.1758378180784,
@@ -32,6 +65,7 @@
     },
     {
         "title": "Group10_wen_elkhael [vocals]",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffffffffffffffffffffc01f7f9fffff9f8000000000000000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1115.6931747936285,
         "spectral centroid": 1202.534217780116,
@@ -63,6 +97,7 @@
     },
     {
         "title": "Group10_wen_elkhael[music+vocals]",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffffffffffffffffffffff9e01fe77f8003020458000000000000000000002020030000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1584.5459137755174,
         "spectral centroid": 1420.2208413636458,
@@ -94,6 +129,7 @@
     },
     {
         "title": "Group11_FE!N (Instruments)",
+        "specrogram": "1ffffffffffffffffffffdf3ffffcfb0ce3e9c3e3e01e0300f02218800106042018203878406fffffffeffffffc7fdfe07c031c00000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2552.1243479670666,
         "spectral centroid": 2022.9536177760904,
@@ -125,6 +161,7 @@
     },
     {
         "title": "Group11_FE!N (Vocals)",
+        "specrogram": "7fffffffffffffffffffffffffffffffffffffffffffff807fe0ff01f801c00f007fc1fffdf0018002000e003800e0000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2269.3372130921693,
         "spectral centroid": 2617.9174692847596,
@@ -156,6 +193,7 @@
     },
     {
         "title": "Group11_FE!N",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffc3fffffe013070f003c00700000018007020404fffffe1e7f7f8f87b8dc000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2764.804970917376,
         "spectral centroid": 2400.9364544448117,
@@ -187,6 +225,7 @@
     },
     {
         "title": "Group13_LetHerGo(Instrumental)",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffffffefe11f91cb000f0003000000000000000000080000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2298.9914216490456,
         "spectral centroid": 1911.7429770541553,
@@ -218,6 +257,7 @@
     },
     {
         "title": "Group13_LetHerGo(Original)",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffffffffffffffffcfffffe41c00781ffce7f8002000000000000080400080000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2521.1320313308283,
         "spectral centroid": 2211.9321529621475,
@@ -249,6 +289,7 @@
     },
     {
         "title": "Group13_LetHerGo(Vocals)",
+        "specrogram": "7fffffffffffffffffffe07fffffffffffffffffff07e03f807c00000000000fffffffffc00801e000007ffffffe00000000000003c00000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2193.588437779734,
         "spectral centroid": 2159.8661993149713,
@@ -280,6 +321,7 @@
     },
     {
         "title": "Group14_a sky full of stars_Full.mp3",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffff8ffffffffffff01ffffffffffffffe00600000000000000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1886.221227689744,
         "spectral centroid": 1498.4088615920912,
@@ -311,6 +353,7 @@
     },
     {
         "title": "Group14_a sky full of stars_Music",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffffff9fffdef8e000000000000000038000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1648.2665824913674,
         "spectral centroid": 1202.675556339506,
@@ -342,6 +385,7 @@
     },
     {
         "title": "Group14_a sky full of stars_Vocals.mp3",
+        "specrogram": "1fffffffffffffffffffffffffffffff3fe01ffffff3effc01f8fffffffffffffffff707c000000000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2101.6735006656554,
         "spectral centroid": 2220.960370849529,
@@ -373,6 +417,7 @@
     },
     {
         "title": "Group15_Ya Lala(instruments)",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffff85ffffffce3e03e6007e007c000000000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2186.414386816068,
         "spectral centroid": 1761.8768552916927,
@@ -404,6 +449,7 @@
     },
     {
         "title": "Group15_Ya Lala(lyrics)",
+        "specrogram": "7fffffffffffffffffffffffffffffffffffffffffff8000000000000000000000000000003bfffffffffffff2fffff00000000000006000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1793.3148142844589,
         "spectral centroid": 1660.5577986422832,
@@ -435,6 +481,7 @@
     },
     {
         "title": "Group15_Ya Lala(original)",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffff80ffffffce1e0386000800080003ff0f0000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2493.207051303093,
         "spectral centroid": 2029.0657528890815,
@@ -466,6 +513,7 @@
     },
     {
         "title": "Group16_Something Just Like That(Instruments)",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe7f3f00004c0000000000000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 733.6125839902853,
         "spectral centroid": 631.8430742536289,
@@ -497,6 +545,7 @@
     },
     {
         "title": "Group16_Something Just Like That(Lyrics)",
+        "specrogram": "1ffffffffffffcff9f0000000703fdf81e0000003f9fe000403fffffffffffffffffffffffffffffffffff8c1e000000000000c0060008000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2293.133951587637,
         "spectral centroid": 2775.857889406877,
@@ -528,6 +577,7 @@
     },
     {
         "title": "Group16_Somthing Just Like That(Original)",
+        "specrogram": "1fffffffffffffffffffff07f0f8ffffdfc0000001e0f8000200f7fffffffffffffffffffffffffffdfc000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2562.1949060767424,
         "spectral centroid": 2259.033448327264,
@@ -559,6 +609,7 @@
     },
     {
         "title": "Group17_Shake It Out (instruments) (2)",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffffffffffffffff00020fccffffffffff000000000000000007fc08000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2055.9835563598276,
         "spectral centroid": 1584.0718081982398,
@@ -590,6 +641,7 @@
     },
     {
         "title": "Group17_Shake It Out (lyrics) (2)",
+        "specrogram": "3ffffffffffffffffffffffffffffffffffe01ffffffffffffffffe0003fffffff8000000000000007ffe20000040000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2222.537597937973,
         "spectral centroid": 2940.2236446020524,
@@ -621,6 +673,7 @@
     },
     {
         "title": "Group17_Shake It Out (original) (2)",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffcffffffffffffffff0c0087fffffe000000000000000003fc00000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2329.3234879138854,
         "spectral centroid": 2209.671584922116,
@@ -652,6 +705,7 @@
     },
     {
         "title": "Group18_RollingInTheDeep_Music",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffffffffffffffc0fc7ffffffffffb80000607000407e00000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1486.7357252918382,
         "spectral centroid": 1113.0169720272957,
@@ -683,6 +737,7 @@
     },
     {
         "title": "Group18_RollingInTheDeep_Original",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdfa0000000000070007ff0000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1695.707542493335,
         "spectral centroid": 1408.0847968692556,
@@ -714,6 +769,7 @@
     },
     {
         "title": "Group18_RollingInTheDeep_Vocals",
+        "specrogram": "7ffffffffffffffffffffffffffffffffffffc7ffffffffffffffe007c000001e00001f83fffffff0000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1714.4684171771996,
         "spectral centroid": 2016.8817877120425,
@@ -745,6 +801,7 @@
     },
     {
         "title": "Group19_ShadowOfMine_Full",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc1fc780007000000003c00070000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2367.3243110771377,
         "spectral centroid": 1755.5383568948391,
@@ -776,6 +833,7 @@
     },
     {
         "title": "Group19_ShadowOfMine_Music",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffffcff880e8fe017f301802003400000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1333.8159583543288,
         "spectral centroid": 850.112104690711,
@@ -807,6 +865,7 @@
     },
     {
         "title": "Group19_ShadowOfMine_Vocals",
+        "specrogram": "fffffffffffffffffffffffffffffffc7fffffffffffffffffffdffefc3fc00e000000000003e003fc001c00000000000000000000800070000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2632.951573543313,
         "spectral centroid": 2708.6465429008163,
@@ -838,6 +897,7 @@
     },
     {
         "title": "Group1_Save-your-tears(instruments)",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffffffffffc1fe7ff7fcff9df80fe0ff021c000103ffc00060000040000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1932.89808053922,
         "spectral centroid": 1445.8294466420077,
@@ -869,6 +929,7 @@
     },
     {
         "title": "Group1_Save-your-tears(lyrcis)",
+        "specrogram": "ffffffffffffffffffffffe7ff63ffffffffffffffff80600e0ff80e003e07f800f8003000fffffff9900000100007001fc05e000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2401.762244787343,
         "spectral centroid": 2459.022402682733,
@@ -900,6 +961,7 @@
     },
     {
         "title": "Group1_Save-your-tears(original)",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffc3ff3fdff8df80fe07f0004000383ffc00060000040000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2179.7915715967024,
         "spectral centroid": 1827.8218899682713,
@@ -931,6 +993,7 @@
     },
     {
         "title": "Group20_HitTheRoadJack_Full",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffff82e4c01fffff03e00000000000001800100000000000010000000000000000000400000000",
         "zero crossing": 0,
         "spectral banwidth": 2607.4492351070357,
         "spectral centroid": 2477.5093243481188,
@@ -962,6 +1025,7 @@
     },
     {
         "title": "Group20_HitTheRoadJack_Music",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffffffffffffffffffffe0040000fa7ff83e000000000020038001420000000002f8000000000000000000e00000000",
         "zero crossing": 0,
         "spectral banwidth": 2783.8003935442093,
         "spectral centroid": 2391.042689109774,
@@ -993,6 +1057,7 @@
     },
     {
         "title": "Group20_HitTheRoadJack_Vocals",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffff833e4003fc0000405ffffff380000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2208.7455118006187,
         "spectral centroid": 2419.661980447615,
@@ -1024,6 +1089,7 @@
     },
     {
         "title": "Group3_SomeLikeYou_Full",
+        "specrogram": "1ffffffffffffffffffffffffffffffffff3ffffc07ffffffffefffc01ff0000000000000000000fffffffffa0000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1717.0532495677785,
         "spectral centroid": 1355.7977164032238,
@@ -1055,6 +1121,7 @@
     },
     {
         "title": "Group3_SomeLikeYou_Music",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3f8f0400000000400c0000000001c0000000000001c00000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 500.0470807830367,
         "spectral centroid": 462.51057855817135,
@@ -1086,6 +1153,7 @@
     },
     {
         "title": "Group3_SomeLikeYou_Vocal",
+        "specrogram": "3fffffffffffffffffffffffffffffffe0ffff007fffffffffe40800f9f000000000000000003fffffffffffe0000000000006f030000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2239.7553205823233,
         "spectral centroid": 1903.1894611882487,
@@ -1117,6 +1185,7 @@
     },
     {
         "title": "Group5_NinaCriedPower_Full",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffffe00000000000000000000f20001b9f0040006f3efe84000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2567.358875792926,
         "spectral centroid": 2364.7705858323307,
@@ -1148,6 +1217,7 @@
     },
     {
         "title": "Group5_NinaCriedPower_Music",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffe400006cfff07f8d0efbc000fc0fe3ffff001f0000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2357.928593650965,
         "spectral centroid": 1991.535169355071,
@@ -1179,6 +1249,7 @@
     },
     {
         "title": "Group5_NinaCriedPower_Vocals",
+        "specrogram": "7fffffffffffffffffffffffffffff0c00003ffffffffffffef400000000000000000000000000001bf98fffffffffffffe58ce1c0000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2404.4668849329237,
         "spectral centroid": 2641.0348053093876,
@@ -1210,6 +1281,7 @@
     },
     {
         "title": "Group6_Alkanas_Full",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffc001c0c0101fff8000003000f0802000000000c783000000003fe00000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1981.972504815552,
         "spectral centroid": 1407.873502677165,
@@ -1241,6 +1313,7 @@
     },
     {
         "title": "Group6_Alkanas_Music",
+        "specrogram": "1ffffffffffffffffffffffffff7ffffffffffdffffcff7f0ffffe607eff0ffffffc000003008f000200000000000000000000005800000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1636.486435856765,
         "spectral centroid": 988.983509675906,
@@ -1272,6 +1345,7 @@
     },
     {
         "title": "Group6_Alkanas_Vocals",
+        "specrogram": "103ffffffffffffffffffffff8ffffffffffffffffffffffffff800000000000000000000000000000000079efffff707fe000013f40000001fc1c00000000000",
         "zero crossing": 0,
         "spectral banwidth": 2407.0419769591763,
         "spectral centroid": 2139.74441274791,
@@ -1303,6 +1377,7 @@
     },
     {
         "title": "Group7_SweetDreams_Full",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffff9bffdfffffffffffff000003e03fffffff1b0000000000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2415.056663297259,
         "spectral centroid": 2557.954716516321,
@@ -1334,6 +1409,7 @@
     },
     {
         "title": "Group7_SweetDreams_Music",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff038010000030008000000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1819.5029170758628,
         "spectral centroid": 1353.497245655861,
@@ -1365,6 +1441,7 @@
     },
     {
         "title": "Group7_SweetDreams_Vocals",
+        "specrogram": "3fc3fffcfffffffffbfffffffffffffffff80fe0ffffffffffffc000001ffffffffffffe000007ff2e00000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2616.617319802363,
         "spectral centroid": 3565.123971541209,
@@ -1396,6 +1473,7 @@
     },
     {
         "title": "Group8_AThousandYears(instruments)",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffbffff87f069ff87f80006000103000000000008000000008000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 1653.8874456581564,
         "spectral centroid": 1289.7657088541923,
@@ -1427,6 +1505,7 @@
     },
     {
         "title": "Group8_AThousandYears(lyrics)",
+        "specrogram": "103fffffffffffffffffffffffc7ffffffffffe003001fffffffffff80e0000003802e000000000000000000000000000000000001fffffffc3fffffc00000000",
         "zero crossing": 0,
         "spectral banwidth": 2917.621012871592,
         "spectral centroid": 3034.975832132982,
@@ -1458,6 +1537,7 @@
     },
     {
         "title": "Group8_AThousandYears(original)",
+        "specrogram": "ffffffffffffffffffffffffffffffffffffffe7ff3ffffffffffff83f029fb07f97e0e000003000000000008000000018000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2338.7774980506456,
         "spectral centroid": 1909.541081398143,
@@ -1489,6 +1569,7 @@
     },
     {
         "title": "Group9_Please_Please_Please_full",
+        "specrogram": "1fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff03fc00018fe0000000100000000000000000000000000000000000001000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2711.5959639065854,
         "spectral centroid": 2343.509276355551,
@@ -1520,6 +1601,7 @@
     },
     {
         "title": "Group9_Please_Please_Please_music",
+        "specrogram": "1ffffffffffffffffffffffffffffffffffffffffffffffffffffc7ffffe03fc00139ff0000000180000000000000000000000000000000000000000000000000",
         "zero crossing": 0,
         "spectral banwidth": 2025.4642329103306,
         "spectral centroid": 1596.9488482659847,
@@ -1551,6 +1633,7 @@
     },
     {
         "title": "Group9_Please_Please_Please_vocal",
+        "specrogram": "ffffffffffffff7ffffffffff3fffffffffffffffffff3e0fffc00000000000000000000000000000000000006000004001c7fcfffffffffff800000000000",
         "zero crossing": 0,
         "spectral banwidth": 2818.441341367817,
         "spectral centroid": 3170.9739883233683,

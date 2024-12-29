@@ -1,17 +1,21 @@
 import json
 import os
-from audio_processing import Processing
+from TuneTrack.core.audio_processing import Processing
+import numpy as np
+from load import Load
 
 class Training(Processing):
-    def __init__(self, audio_path, title):
-        super().__init__(audio_path, title)
+    def __init__(self, audio, title, sr):
+        super().__init__(audio, title, sr)
         self.file_path = "TuneTrack/hashed_data.json"
         self.save_hash_to_file()
 
     def save_hash_to_file(self):
-        audio_hash = self.compute_hash()
+        audio_hash = self.compute_hash(self.feature_vector)
+        spectro_hash = self.compute_hash(np.mean(self.spectrogram, axis=1))
         new_data = {
             "title": self.title,
+            "specrogram": spectro_hash,
             "zero crossing": self.zero_crossing,
             "spectral banwidth": self.spectral_bandwidth,
             "spectral centroid": self.spectral_centroid,
@@ -39,9 +43,9 @@ class Training(Processing):
         try:
             with open(self.file_path, 'w') as file:
                 json.dump(data, file, indent=4)
-            print(f"{self.audio_path} is successufly saved")
+            print(f"{self.title} is successufly saved")
         except Exception as e:
-            print(f"Failed to save {self.audio_path}: {e}")
+            print(f"Failed to save {self.title}: {e}")
 
 # Training
 audio_folder = "TuneTrack/Music"
@@ -50,6 +54,7 @@ for filename in os.listdir(audio_folder):
     file_path = os.path.join(audio_folder, filename)
     title = os.path.splitext(filename)[0]
     try:
-        training_instance = Training(file_path, title)
+        audio, sr = Load(file_path).get_audio_data()
+        training_instance = Training(audio, title, sr)
     except Exception as e:
-        print(f"Failed to process {file_path}: {e}")
+        print(f"Failed to process {title}: {e}")

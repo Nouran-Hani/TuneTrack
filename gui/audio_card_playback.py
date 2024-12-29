@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QSlider, QLabel
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtCore import Qt, QUrl, QTimer, QSize 
-from style import cardStyle,circleButton, slider_style, timeLabel
+from gui.style import cardStyle,circleButton, slider_style, timeLabel
 from PyQt5.QtGui import QIcon
 
 class AudioCardPlayback(QWidget):

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QStyle
 from PyQt5.QtCore import pyqtSignal, Qt, QUrl, QTimer, QSize
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from style import cardStyle, songName, uploadButton, circleButton
+from gui.style import cardStyle, songName, uploadButton, circleButton
 from PyQt5.QtGui import QIcon
 
 
