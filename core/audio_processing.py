@@ -71,8 +71,12 @@ class Processing:
 
         # Convert binary array to a hexadecimal string
         hash_str = ''.join(map(str, binary_vector))
-        hash_hex = f"{int(hash_str, 2):x}"  # Convert binary string to hex
-        return hash_hex
+        self.hash_hex = f"{int(hash_str, 2):x}"  # Convert binary string to hex
+        return self.hash_hex
+    
+    def get_hashed_features(self):
+        self.compute_hash(self.feature_vector)
+        return self.hash_hex
 
     # def compute_perceptual_hash(self):
     #     """

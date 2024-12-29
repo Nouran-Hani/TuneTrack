@@ -12,6 +12,12 @@ class AudioPlayerApp(QMainWindow):
         super().__init__()
         self.initializeUI()
         self.connectUI()
+        self.initailizeParameters()
+
+    def initailizeParameters(self):
+        self.audio1 = None
+        self.audio2 = None
+        self.audio = None
 
     def initializeUI(self):
         self.createUiElements()
@@ -25,7 +31,6 @@ class AudioPlayerApp(QMainWindow):
         self.audioCard1 = AudioCardUpload("Audio 1")
         self.audioCard2 = AudioCardUpload("Audio 2")
         self.playback_widget = AudioCardPlayback()
-
 
         self.bestMatchLabel = QLabel("Best Match")
         # should be in function
@@ -82,8 +87,6 @@ class AudioPlayerApp(QMainWindow):
         centralWidget.setLayout(self.mainLayout)
         self.setCentralWidget(centralWidget)
 
-
-
     def styleUi(self):
         self.logo.setStyleSheet("""
             QLabel {
@@ -119,9 +122,39 @@ class AudioPlayerApp(QMainWindow):
         self.audioCard1.upload_button.clicked.connect(
             lambda: self.playback_widget.add_audio(self.audioCard1)
         )
+        self.audioCard1.upload_button.clicked.connect(self.load_audio1)
+
         self.audioCard2.upload_button.clicked.connect(
             lambda: self.playback_widget.add_audio(self.audioCard2)
         )
+        self.audioCard2.upload_button.clicked.connect(self.load_audio2)
+
+    def load_audio1(self):
+        self.audio_path1 = self.audioCard1.get_file()
+        self.audio1, self.sr1 = Load(self.audio_path1).get_audio_data()
+        print("audio1: ",self.audio1)
+        self.processing()
+        
+    def load_audio2(self):    
+        self.audio_path2 = self.audioCard2.get_file()
+        self.audio2, self.sr2 = Load(self.audio_path2).get_audio_data()
+        print("audio1: ",self.audio2)
+        self.processing()
+
+    def processing(self):
+        if self.audio1 is not None and self.audio2 is not None:
+            self.audio = self.audio1 + self.audio2
+            self.sr = self.sr1
+        elif self.audio1 is not None:
+            self.audio = self.audio1
+            self.sr = self.sr1
+        else:
+            self.audio = self.audio2
+            self.sr = self.sr2
+        print("total: ",self.audio)
+        ## separate in another function called by a button
+        self.hashed_features = Processing(self.audio, title=None, sr=self.sr).get_hashed_features()
+        print(self.hashed_features)
 
 if __name__ == "__main__":
     app = QApplication([])
