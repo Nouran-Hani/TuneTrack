@@ -65,7 +65,7 @@ class AudioCardPlayback(QWidget):
         self.time_label.setStyleSheet(timeLabel)  
         self.progress.setStyleSheet(slider_style)  
         self.duration_label.setStyleSheet(timeLabel)  
-        self.card_widget.setStyleSheet(cardStyle)
+        # self.card_widget.setStyleSheet(cardStyle)
 
     def add_audio(self, uploader):
         file_path = uploader.get_file()

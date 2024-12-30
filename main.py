@@ -1,9 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, \
     QSpacerItem
-from TuneTrack.gui.audio_card_upload import AudioCardUpload
-from TuneTrack.gui.audio_card_playback import AudioCardPlayback
-from TuneTrack.gui.Results import ResultCard
+from gui.audio_card_upload import AudioCardUpload
+from gui.audio_card_playback import AudioCardPlayback
+from gui.Results import ResultCard
 from core.load import Load
 from core.audio_processing import Processing
 
@@ -88,17 +88,20 @@ class AudioPlayerApp(QMainWindow):
         self.setCentralWidget(centralWidget)
 
     def styleUi(self):
+        self.setStyleSheet("background-color:#121212;")
         self.logo.setStyleSheet("""
             QLabel {
                 font-family: 'Roboto';
                 font-weight: Bold;
                 font-size: 50px;
+                color:White;
                 padding-left: 10px;
                 border: none;
             }
         """)
         self.slogan.setStyleSheet("""
             QLabel {
+                color:White;
                 font-family: 'Roboto';
                 font-weight: Bold;
                 font-size: 20px;
@@ -111,6 +114,7 @@ class AudioPlayerApp(QMainWindow):
                 font-family: 'Roboto';
                 font-weight: Bold;
                 font-size: 30px;
+                color:White;
                 padding: 5px;
                 border: none;
             }
