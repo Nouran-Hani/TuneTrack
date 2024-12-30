@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, \
     QPushButton
@@ -143,6 +143,7 @@ class ResultCard(QWidget):
         self.playButton.setFlat(True)
         self.playButton.setStyleSheet("border: none;")
 
+
     def connectUI(self):
         # This function can be used to connect any buttons or actions
         print("UI Connection Done")
@@ -152,6 +153,7 @@ class ResultCard(QWidget):
         size = self.cover.width()  # Use width as the reference to adjust the size
         self.cover.setFixedSize(size, size)
         self.playButton.setFixedSize(int(size * 0.75), int(size * 0.75))
+        self.playButton.setIconSize(QSize(int(size * 0.3), int(size * 0.3)))
 
 
 if __name__ == "__main__":

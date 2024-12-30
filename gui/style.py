@@ -1,13 +1,13 @@
 cardStyle = """
 QWidget {
-    background-color: #1E1E1E;
+    background-color: #2a2a2a;
     border-radius: 15px;
 }
 """
 
 songName = """
 QLabel {
-    color: #FFFFFF;
+    color: White;
     font-size: 16px;
     font-weight: bold;
 }
@@ -15,9 +15,10 @@ QLabel {
 
 uploadButton = """
 QPushButton {
-    background-color: #FFFFFF;
-    color: #000000;
+    background-color: #FE7191;
+    color: White;
     font-size: 14px;
+    font-weight:Bold;
     border-radius: 20px;
     padding: 5px 15px;
 }
@@ -37,23 +38,23 @@ QPushButton:hover {
 """
 slider_style = """
     QSlider::groove:horizontal {
-        background: #333333;
+        background: #EFEFEF;
         height: 4px;
         border-radius: 2px;
     }
     QSlider::handle:horizontal {
-        background: #FFFFFF;
+        background: #fe7191;
         border-radius: 8px;
         width: 16px;
         height: 16px;
         margin: -6px 0;
     }
     QSlider::sub-page:horizontal {
-        background: #FFFFFF;
+        background: #fe7191;
         border-radius: 2px;
     }
     QSlider::add-page:horizontal {
-        background: #666666;
+        background: #EFEFEF;
         border-radius: 2px;
     }
 """

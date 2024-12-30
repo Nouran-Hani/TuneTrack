@@ -94,7 +94,7 @@ class AudioPlayerApp(QMainWindow):
                 font-family: 'Roboto';
                 font-weight: Bold;
                 font-size: 50px;
-                color:White;
+                color:#FE7191;
                 padding-left: 10px;
                 border: none;
             }
@@ -163,5 +163,6 @@ class AudioPlayerApp(QMainWindow):
 if __name__ == "__main__":
     app = QApplication([])
     window = AudioPlayerApp()
+    window.resize(500,750)
     window.show()
     app.exec_()
