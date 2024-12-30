@@ -7,6 +7,7 @@ from gui.Results import ResultCard
 from gui.style import weightSlider,logo,slogan,bestMatchLabel,NumberLabelPink,NumberLabelWhite
 from core.load import Load
 from core.audio_processing import Processing
+from core.table import SimilarityCheck
 
 class AudioPlayerApp(QMainWindow):
     def __init__(self):
@@ -116,7 +117,7 @@ class AudioPlayerApp(QMainWindow):
         self.audio2Weight.setStyleSheet(NumberLabelWhite)
         self.audio1Weight.setAlignment(Qt.AlignCenter)
         self.audio2Weight.setAlignment(Qt.AlignCenter)
-        print("Style Done")
+        # print("Style Done")
 
     def connectUI(self):
         self.audioCard1.upload_button.clicked.connect(
@@ -133,28 +134,30 @@ class AudioPlayerApp(QMainWindow):
     def load_audio1(self):
         self.audio_path1 = self.audioCard1.get_file()
         self.audio1, self.sr1 = Load(self.audio_path1).get_audio_data()
-        print("audio1: ",self.audio1)
+        # print("audio1: ",self.audio1)
         self.processing()
         
     def load_audio2(self):    
         self.audio_path2 = self.audioCard2.get_file()
         self.audio2, self.sr2 = Load(self.audio_path2).get_audio_data()
-        print("audio1: ",self.audio2)
+        # print("audio1: ",self.audio2)
         self.processing()
 
     def processing(self):
         if self.audio1 is not None and self.audio2 is not None:
             self.audio = self.audio1 + self.audio2
-            self.sr = self.sr1
         elif self.audio1 is not None:
             self.audio = self.audio1
-            self.sr = self.sr1
         else:
             self.audio = self.audio2
-            self.sr = self.sr2
-        print("total: ",self.audio)
-        self.hashed_features = Processing(self.audio, title=None, sr=self.sr).get_hashed_features()
-        print(self.hashed_features)
+        self.process = Processing(self.audio, title=None)
+        self.hashed_features = self.process.get_hashed_features()
+        check = SimilarityCheck()
+        check.set_hashed_song(self.hashed_features)
+        similar = check.get_similarities()
+        print(similar)        
+    
+
 
     def updateWeightLabels(self):
         value = self.weightSlider.value()

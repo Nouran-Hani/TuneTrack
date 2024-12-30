@@ -112,23 +112,20 @@ import json
 import imagehash
 import librosa
 import os
-from audio_processing import Processing  # Assuming this is where the Processing class resides
-
 
 class SimilarityCheck:
-    def __init__(self, json_file_path):
+    def __init__(self):
         """
         Initialize the song database by loading data from a JSON file.
         :param json_file_path: Path to the JSON file containing song data.
         """
-        self.json_file_path = os.path.join(os.path.dirname(__file__), '..', json_file_path)
+        self.json_file_path = 'TuneTrack/core/final_hashed_data.json'
+        self.hashed = None
         self.songs = []
+        self.similarities = []
         self.load_songs()
 
     def load_songs(self):
-        """
-        Load songs from the JSON file into the class's song list.
-        """
         if not os.path.exists(self.json_file_path):
             raise FileNotFoundError(f"JSON file not found: {self.json_file_path}")
 
@@ -139,7 +136,7 @@ class SimilarityCheck:
                     # Handle missing keys and load relevant fields
                     self.songs.append({
                         'title': entry['title'],
-                        'spectrogram_hash': entry['spectrogram_hash']
+                        'features': entry['features']
 
                     })
                 except KeyError as e:
@@ -148,33 +145,30 @@ class SimilarityCheck:
         if not self.songs:
             raise ValueError("No valid songs found in the JSON file.")
 
-    def compare_with_query(self, query_file):
+    def compare_with_query(self):
         """
         Compare a specific query song with all songs in the database and return a sorted list of similarities.
-
-        :param query_file: Path to the query audio file.
         :return: List of tuples containing (song_title, similarity_index)
         """
-        # Load query song's audio and determine its sampling rate
-        audio, sr = librosa.load(query_file, sr=None)  # Load the query audio file with its original sampling rate
+        # # Load query song's audio and determine its sampling rate
+        # audio, sr = librosa.load(query_file, sr=None)  # Load the query audio file with its original sampling rate
 
-        # Create a Processing instance for the query song
-        query_song = Processing(audio=audio, title="query_song", sr=sr)
+        # # Create a Processing instance for the query song
+        # query_song = Processing(audio=audio, title="query_song", sr=sr)
 
-        # Extract query song's spectrogram hash
-        query_spectrogram_hash = query_song.get_hashed_features()  # Method to get the spectrogram hash for query
+        # # Extract query song's spectrogram hash
+        # query_spectrogram_hash = query_song.get_hashed_features()  # Method to get the spectrogram hash for query
 
-        similarities = []
+        query_spectrogram_hash = self.hashed
 
         for song in self.songs:
             # Compare the spectrogram hash similarity using Hamming distance
-            print(query_spectrogram_hash, song['spectrogram_hash'])
-            hash_similarity = self.compare_perceptual_hashes(query_spectrogram_hash, song['spectrogram_hash'])
-            similarities.append((song['title'], hash_similarity))
+            # print(query_spectrogram_hash, song['features'])
+            hash_similarity = self.compare_perceptual_hashes(query_spectrogram_hash, song['features'])
+            self.similarities.append((song['title'], hash_similarity))
 
         # Sort songs by similarity (lower is more similar)
-        similarities.sort(key=lambda x: x[1], reverse=False)
-        return similarities
+        self.similarities.sort(key=lambda x: x[1], reverse=False)
 
     def compare_hashes(self, query_hash, song_hash):
         """
@@ -210,19 +204,24 @@ class SimilarityCheck:
         # Return the Hamming distance (lower distance means more similarity)
         return hamming_distance
 
+    def set_hashed_song(self, hashed):
+        self.hashed = hashed
+        self.compare_with_query()
+
+    def get_similarities(self):
+        return self.similarities[:5]  # Return the top 5 most similar songs
 
 
+# # Example Usage:
 
-# Example Usage:
+# # Step 1: Create the SimilarityCheck class with the JSON file
+# song_db = SimilarityCheck()
 
-# Step 1: Create the SimilarityCheck class with the JSON file
-song_db = SimilarityCheck(json_file_path='hashed_data4.json')
+# # Step 2: Compare a target song with the songs in the JSON database
+# query_song_path = "TuneTrack/Music/Group18_RollingInTheDeep_Music.wav"
+# sorted_songs = song_db.compare_with_query(query_song_path)
 
-# Step 2: Compare a target song with the songs in the JSON database
-query_song_path = "../Music/Group17_Shake It Out (original) (2).wav"
-sorted_songs = song_db.compare_with_query(query_song_path)
-
-# Step 3: Output the sorted songs and their similarity
-print("Similarity Results:")
-for song_title, similarity in sorted_songs:
-    print(f"Song: {song_title}, Similarity Index: {similarity}")
+# # Step 3: Output the sorted songs and their similarity
+# print("Similarity Results:")
+# for song_title, similarity in sorted_songs:
+#     print(f"Song: {song_title}, Similarity Index: {similarity}")
