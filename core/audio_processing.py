@@ -264,7 +264,7 @@ class Processing:
 import librosa
 
 # Example usage
-audio_file_path = '../Music/Group18_RollingInTheDeep_Music.wav'
+audio_file_path = 'Music/Group18_RollingInTheDeep_Music.wav'
 
 # Load the audio file using librosa
 audio, sr = librosa.load(audio_file_path, sr=None)
