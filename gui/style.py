@@ -23,7 +23,7 @@ QPushButton {
     padding: 5px 15px;
 }
 QPushButton:hover {
-    background-color: #EEEEEE;
+    background-color: #1f1f1f;
 }
 """
 
