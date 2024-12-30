@@ -8,8 +8,11 @@ QWidget {
 songName = """
 QLabel {
     color: White;
-    font-size: 16px;
-    font-weight: bold;
+   font-family: 'Roboto';
+        font-weight: Bold;
+        font-size: 20px;
+       padding: 5px;
+       border: none;
 }
 """
 
@@ -36,7 +39,7 @@ QPushButton:hover {
     background-color: #EEEEEE;
 }
 """
-slider_style = """
+weightSlider = """
     QSlider::groove:horizontal {
         background: #EFEFEF;
         height: 4px;
@@ -66,3 +69,84 @@ timeLabel = """
         font-weight: regular;
     }
 """
+slider_style = """
+QSlider {
+    min-height: 6px;
+    max-height: 6px;
+    border-radius: 2px;
+    border: 1px solid #FE7191;
+    background-color: White;
+}
+QSlider::groove:horizontal {
+    height: 12px;
+    background: transparent;
+}
+QSlider::handle:horizontal {
+    background: #FE7191;
+    width: 12px;
+    height: 12px;
+    margin: 0px;
+    border-radius: 2px;
+}
+QSlider::sub-page:horizontal {
+    border-radius: 2px;
+    background-color: #FE7191;
+}
+QSlider::add-page:horizontal {
+    background: transparent;
+}
+"""
+
+logo="""
+QLabel {
+                font-family: 'Roboto';
+                font-weight: Bold;
+                font-size: 50px;
+                color:#FE7191;
+                padding-left: 10px;
+                border: none;
+            }
+            """
+
+slogan="""
+            QLabel {
+                color:White;
+                font-family: 'Roboto';
+                font-weight: Bold;
+                font-size: 20px;
+                border: none;
+            }
+        """
+
+bestMatchLabel="""
+            QLabel {
+                font-family: 'Roboto';
+                font-weight: Bold;
+                font-size: 30px;
+                color:White;
+                padding: 5px;
+                border: none;
+            }
+        """
+
+NumberLabelPink="""
+        QLabel {
+            color: #FE7191;
+            font-family: 'Roboto';
+            font-weight: Bold;
+            font-size: 25px;
+            padding: 5px;
+            border: none;
+        }
+    """
+
+NumberLabelWhite="""
+            QLabel {
+                color: White;
+                font-family: 'Roboto';
+                font-weight: Bold;
+                font-size: 25px;
+                padding: 5px;
+                border: none;
+            }
+        """
