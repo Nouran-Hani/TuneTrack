@@ -34,7 +34,7 @@ class AudioPlayerApp(QMainWindow):
 
         self.bestMatchLabel = QLabel("Best Match")
         # should be in function
-        self.bestMatchCard = ResultCard("1", "Yarraab", "Tamora Remix", 55)
+        self.bestMatchCard = ResultCard("1", "Yarraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", "Tamora Remix", 55)
         self.MatchCard1 = ResultCard("2", "Yarraab", "Tamora Remix", 55)
         self.MatchCard2 = ResultCard("3")
         self.MatchCard3 = ResultCard("4")
@@ -163,6 +163,6 @@ class AudioPlayerApp(QMainWindow):
 if __name__ == "__main__":
     app = QApplication([])
     window = AudioPlayerApp()
-    window.resize(500,750)
+    window.resize(900, 750)
     window.show()
     app.exec_()

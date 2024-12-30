@@ -19,7 +19,7 @@ QPushButton {
     color: White;
     font-size: 14px;
     font-weight:Bold;
-    border-radius: 20px;
+    border-radius: 7px;
     padding: 5px 15px;
 }
 QPushButton:hover {
