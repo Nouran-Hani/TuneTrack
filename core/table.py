@@ -194,7 +194,7 @@ class SimilarityCheck:
         self.compare_with_query()
 
     def get_similarities(self):
-        return self.similarities  # Return the top 5 most similar songs
+        return self.similarities[:5]  # Return the top 5 most similar songs
 
 
 # Example Usage:

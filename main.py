@@ -168,7 +168,7 @@ class TuneTrackApp(QMainWindow):
             self.audio = self.audio1
         else:
             self.audio = self.audio2
-        self.processing()
+        # self.processing()
 
     def processing(self):
         self.process = Processing(self.audio, title=None)
@@ -182,6 +182,10 @@ class TuneTrackApp(QMainWindow):
         value = self.weightSlider.value()
         self.audio1Weight.setText(f"{value}")
         self.audio2Weight.setText(f"{100 - value}")
+        if self.audio1 is not None or self.audio2 is not None:
+            self.setting_audio()
+            self.processing()
+
 
 if __name__ == "__main__":
     app = QApplication([])
