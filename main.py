@@ -149,35 +149,39 @@ class TuneTrackApp(QMainWindow):
         self.audio1, self.sr1 = Load(self.audio_path1).get_audio_data()
         # print("audio1: ",self.audio1)
         self.updateSliderBasedOnUploads()
-        self.processing()
+        self.setting_audio()
         
     def load_audio2(self):    
         self.audio_path2 = self.audioCard2.get_file()
         self.audio2, self.sr2 = Load(self.audio_path2).get_audio_data()
         # print("audio1: ",self.audio2)
         self.updateSliderBasedOnUploads()
-        self.processing()
+        self.setting_audio()
 
-    def processing(self):
+    def setting_audio(self):
         if self.audio1 is not None and self.audio2 is not None:
-            self.audio = self.audio1 + self.audio2
+            v1 = int(self.audio1Weight.text())/100
+            v2 = int(self.audio2Weight.text())/100
+            min_len = min(len(self.audio1), len(self.audio2))
+            self.audio = self.audio1[:min_len]*v1 + self.audio2[:min_len]*v2
         elif self.audio1 is not None:
             self.audio = self.audio1
         else:
             self.audio = self.audio2
+        self.processing()
+
+    def processing(self):
         self.process = Processing(self.audio, title=None)
         self.hashed_features = self.process.get_hashed_features()
         check = SimilarityCheck()
         check.set_hashed_song(self.hashed_features)
-        similar = check.get_similarities()
-        print(similar)        
-    
-
+        similar = check.get_similarities() # integrate with the results
+        print(similar)
 
     def updateWeightLabels(self):
         value = self.weightSlider.value()
         self.audio1Weight.setText(f"{value}")
-        self.audio2Weight.setText(f"{100 - value}") 
+        self.audio2Weight.setText(f"{100 - value}")
 
 if __name__ == "__main__":
     app = QApplication([])
