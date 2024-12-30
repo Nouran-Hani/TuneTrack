@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, \
-    QSpacerItem
+    QSpacerItem, QSlider, QSpinBox
 from gui.audio_card_upload import AudioCardUpload
 from gui.audio_card_playback import AudioCardPlayback
 from gui.Results import ResultCard
@@ -30,6 +30,12 @@ class AudioPlayerApp(QMainWindow):
 
         self.audioCard1 = AudioCardUpload("Audio 1")
         self.audioCard2 = AudioCardUpload("Audio 2")
+
+        self.weightLabel = QLabel("Weight")
+        self.weightSlider = QSlider(Qt.Horizontal)
+        self.audio1Weight = QSpinBox()
+        self.audio2Weight = QSpinBox()
+
         self.playback_widget = AudioCardPlayback()
 
         self.bestMatchLabel = QLabel("Best Match")
@@ -52,6 +58,11 @@ class AudioPlayerApp(QMainWindow):
 
         uploadLayout.addWidget(self.audioCard1)
         uploadLayout.addWidget(self.audioCard2)
+
+        weightLayout = QHBoxLayout()
+        weightLayout.addWidget(self.audio1Weight)
+        weightLayout.addWidget(self.weightSlider)
+        weightLayout.addWidget(self.audio2Weight)
 
         playbackLayout = QHBoxLayout()
 
@@ -77,8 +88,10 @@ class AudioPlayerApp(QMainWindow):
 
         self.mainLayout.addLayout(logoLayout,5)
         self.mainLayout.addSpacerItem(QSpacerItem(20, 10))
-        self.mainLayout.addLayout(uploadLayout,10)
-        self.mainLayout.addLayout(playbackLayout,35)
+        self.mainLayout.addLayout(uploadLayout,5)
+        self.mainLayout.addWidget(self.weightLabel)
+        self.mainLayout.addLayout(weightLayout,10)
+        self.mainLayout.addLayout(playbackLayout,30)
         self.mainLayout.addWidget(self.bestMatchLabel,3)
         self.mainLayout.addLayout(bestMatchLayout,22)
         self.mainLayout.addLayout(resultsRow,20)
