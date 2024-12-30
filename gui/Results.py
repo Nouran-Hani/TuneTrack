@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, \
     QPushButton
@@ -18,7 +18,7 @@ class ResultCard(QWidget):
     def createUiElements(self, rank, songName, singerName, similarity):
         self.rank = QLabel(rank)
         self.cover = QPushButton()
-        self.songName = QLabel(songName)
+        self.songName = ScrollingLabel(songName)
         self.singerName = QLabel(singerName)
         self.similarityBar = QProgressBar()
         self.similarityBar.setMinimum(0)
@@ -44,29 +44,29 @@ class ResultCard(QWidget):
         cardBody.addWidget(self.similarityBar)
         cardBody.addStretch(1)
 
-        # Adjust the proportions of the widgets in the main layout
         self.mainLayout.addWidget(self.rank, 3)
         self.mainLayout.addWidget(self.cover, 10)
-        self.mainLayout.addLayout(cardBody, 30)
+        self.mainLayout.addLayout(cardBody, 20)
         self.mainLayout.addWidget(self.playButton, 5)
 
         self.setLayout(self.mainLayout)
 
     def styleUi(self):
-        self.mainColor = "White"
-        self.accentColor = "Gray"
+        self.mainColor = "#FE7191"
+        self.accentColor = "White"
         self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setStyleSheet("background-color: #2d2d2d; border: 2px solid black; border-radius:12px;")
+        self.setStyleSheet(f"background-color: #2a2a2a;  border-radius:12px;")
 
         self.setMinimumWidth(400)
+        self.setMaximumWidth(500)
         self.setMaximumHeight(200)
 
         # Style for the cover button
+        self.cover.setMinimumSize(70,70)
         self.cover.setStyleSheet("""
             QPushButton {
                 background-color: White;
-                border: 1px solid Gray;
+                border: 1px solid #405159;
                 border-radius: 10px;
             }
         """)
@@ -78,71 +78,66 @@ class ResultCard(QWidget):
                 color: {self.mainColor};
                 font-family: 'Roboto';
                 font-weight: Bold;
-                font-size: 25px;
+                font-size: 35px;
                 border: 1px solid #FF0000;
                 padding: 5px;
                 border: none;
             }}
         """)
+        #
+        # self.songName.setStyleSheet(f"""
+        #     QLabel {{
+        #         color: {self.mainColor};
+        #         font-family: 'Roboto';
+        #         font-weight: Bold;
+        #         font-size: 20px;
+        #         padding: 5px;
+        #         border: none;
+        #     }}
+        # """)
 
-        # Style for song name label
-        self.songName.setStyleSheet(f"""
-            QLabel {{
-                color: {self.mainColor};
-                font-family: 'Roboto';
-                font-weight: semiBold;
-                font-size: 20px;
-                padding: 5px;
-                border: none;
-            }}
-        """)
-
-        # Style for singer name label
         self.singerName.setStyleSheet(f"""
             QLabel {{
                 color: {self.accentColor};
                 font-family: 'Roboto';
-                font-weight: semiBold;
+                font-weight: bodld;
                 font-size: 12px;
                 padding: 5px;
                 border: none;
             }}
         """)
 
-        # Style for similarity result label
         self.similarityResult.setStyleSheet(f"""
             QLabel {{
-                color: {self.accentColor};
+                color: {self.mainColor};
                 font-family: 'Roboto';
-                font-weight: semiBold;
+                font-weight: Bold;
                 font-size: 25px;
                 border: 1px solid #009688;
                 padding: 5px;
                 border: none;
             }}
         """)
-
-        # Align similarity result to the right
         self.similarityResult.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-
-        # Style for similarity progress bar
-        self.similarityBar.setStyleSheet("""
-            QProgressBar {
+        self.similarityBar.setStyleSheet(f"""
+            QProgressBar {{
                 min-height: 12px;
                 max-height: 12px;
                 border-radius: 6px;
-                border: 1px solid Gray;
-                background-color: Gray;
-            }
-            QProgressBar::chunk {
-                border-radius: 6px;
+                border: 1px solid {self.mainColor};
                 background-color: White;
-            }
+            }}
+            QProgressBar::chunk {{
+                border-radius: 6px;
+                background-color: #FE7191;
+            }}
         """)
 
         self.similarityBar.setFormat("")  # Remove the text from the QProgressBar
+        self.playButton.setMinimumSize(60,60)
         self.playButton.setFlat(True)
         self.playButton.setStyleSheet("border: none;")
+
 
     def connectUI(self):
         # This function can be used to connect any buttons or actions
@@ -153,7 +148,55 @@ class ResultCard(QWidget):
         size = self.cover.width()  # Use width as the reference to adjust the size
         self.cover.setFixedSize(size, size)
         self.playButton.setFixedSize(int(size * 0.75), int(size * 0.75))
+        self.playButton.setIconSize(QSize(int(size * 0.3), int(size * 0.3)))
 
+
+
+
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QLabel
+
+class ScrollingLabel(QLabel):
+    def __init__(self, text="", parent=None):
+        super().__init__(text, parent)
+        self.fullText = text
+        self.offset = 0
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.scrollText)
+        self.setStyleSheet("""
+            QLabel {
+                color: #FE7191;
+                font-family: 'Roboto';
+                font-weight: Bold;
+                font-size: 20px;
+                padding: 5px;
+                border: none;
+                overflow: hidden;
+            }
+        """)
+        self.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+
+    def enterEvent(self, event):
+        """Start scrolling when the mouse hovers over the label."""
+        if self.fontMetrics().width(self.fullText) > self.width():  # Only scroll if the text is wider
+            self.offset = 0  # Reset offset
+            self.timer.start(50)  # Adjust interval for smoother scrolling
+        super().enterEvent(event)
+
+    def leaveEvent(self, event):
+        """Stop scrolling and reset the text when the mouse leaves."""
+        self.timer.stop()
+        self.setText(self.fullText)  # Reset text to original
+        super().leaveEvent(event)
+
+    def scrollText(self):
+        """Animate the text by updating the displayed portion."""
+        if self.fontMetrics().width(self.fullText) > self.width():  # Check if scrolling is needed
+            self.offset += 1
+            if self.offset > len(self.fullText):
+                self.offset = 0  # Reset offset to loop the text
+            visibleText = self.fullText[self.offset:] + " " + self.fullText[:self.offset]
+            self.setText(visibleText)
 
 if __name__ == "__main__":
     app = QApplication([])
