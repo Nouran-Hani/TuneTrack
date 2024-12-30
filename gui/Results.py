@@ -53,11 +53,10 @@ class ResultCard(QWidget):
         self.setLayout(self.mainLayout)
 
     def styleUi(self):
-        self.mainColor = "White"
-        self.accentColor = "Gray"
+        self.mainColor = "#FE7191"
+        self.accentColor = "White"
         self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setStyleSheet("background-color: #2d2d2d; border: 2px solid black; border-radius:12px;")
+        self.setStyleSheet(f"background-color: #2a2a2a;  border-radius:12px;")
 
         self.setMinimumWidth(400)
         self.setMaximumHeight(200)
@@ -66,7 +65,7 @@ class ResultCard(QWidget):
         self.cover.setStyleSheet("""
             QPushButton {
                 background-color: White;
-                border: 1px solid Gray;
+                border: 1px solid #405159;
                 border-radius: 10px;
             }
         """)
@@ -90,7 +89,7 @@ class ResultCard(QWidget):
             QLabel {{
                 color: {self.mainColor};
                 font-family: 'Roboto';
-                font-weight: semiBold;
+                font-weight: Bold;
                 font-size: 20px;
                 padding: 5px;
                 border: none;
@@ -102,7 +101,7 @@ class ResultCard(QWidget):
             QLabel {{
                 color: {self.accentColor};
                 font-family: 'Roboto';
-                font-weight: semiBold;
+                font-weight: bodld;
                 font-size: 12px;
                 padding: 5px;
                 border: none;
@@ -126,18 +125,18 @@ class ResultCard(QWidget):
         self.similarityResult.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         # Style for similarity progress bar
-        self.similarityBar.setStyleSheet("""
-            QProgressBar {
+        self.similarityBar.setStyleSheet(f"""
+            QProgressBar {{
                 min-height: 12px;
                 max-height: 12px;
                 border-radius: 6px;
-                border: 1px solid Gray;
-                background-color: Gray;
-            }
-            QProgressBar::chunk {
-                border-radius: 6px;
+                border: 1px solid {self.mainColor};
                 background-color: White;
-            }
+            }}
+            QProgressBar::chunk {{
+                border-radius: 6px;
+                background-color: #FE7191;
+            }}
         """)
 
         self.similarityBar.setFormat("")  # Remove the text from the QProgressBar
