@@ -35,54 +35,59 @@ class TuneTrackApp(QMainWindow):
         self.audioCard1 = AudioCardUpload("Audio 1")
         self.audioCard2 = AudioCardUpload("Audio 2")
 
-      
+
         self.weightSlider = QSlider(Qt.Horizontal)
-        self.audio1Weight = QLabel("50") 
-        self.audio2Weight = QLabel("50") 
+        self.audio1Weight = QLabel("50")
+        self.audio2Weight = QLabel("50")
         self.weightSlider.setMinimum(0)
         self.weightSlider.setMaximum(100)
-        self.weightSlider.setValue(50)  
-    
+        self.weightSlider.setValue(50)
+
 
         self.playback_widget = AudioCardPlayback()
 
         self.bestMatchLabel = QLabel("Best Match")
         # should be in function
         self.bestMatchCard = ResultCard("1", "Song 1", "Remix", 55)
-        self.MatchCard1 = ResultCard("2", "Song 2", "Remix", 40)
+        self.MatchCard1 = ResultCard("2", "JSJ 2", "Remix", 40)
         self.MatchCard2 = ResultCard("3", "Song 3", "Remix", 30)
         self.MatchCard3 = ResultCard("4", "Song 4", "Remix", 25)
         self.MatchCard4 = ResultCard("5", "Song 5", "Remix", 10)
 
-        self.createResultCard()
+    def updateResults(self, song_similarity_data):
+        import re
 
-    def createResultCard(self, array=[("Group5-A sky full of stars_SingerName", 21),
-                                      ("Group5-songName_SingerName", 25),
-                                      ("Group5-songName_SingerName", 24),
-                                      ("Group5-songName_SingerName", 24),
-                                      ("Group5-songName_SingerName", 24)]):
-        self.resultsLayout = QGridLayout()
+        import re
 
-        def parse_song_info(song_info):
-            try:
-                group, song_singer = song_info.split("-", 1)  # Split by the first "-"
-                song_name, singer_name = song_singer.split("_", 1)  # Split by the first "_"
-                return song_name, singer_name
-            except ValueError:
-                return "Unknown Song", "Unknown Singer"
+        def parse_song_name(song_file_name):
+            """Parse the song name and artist from the file name."""
+            # Regular expression to capture the group name, song name, and artist name
+            match = re.match(r"([A-Za-z0-9_]+)_([A-Za-z0-9_ ]+)__([A-Za-z0-9_() ]+)", song_file_name)
 
-        for i, (song_info, score) in enumerate(array):
-            song_name, singer_name = parse_song_info(song_info)
+            if match:
+                song_name = match.group(2).strip()  # Extract song name
+                artist = match.group(3).strip()  # Extract artist name
+                return song_name, artist
 
-            card = ResultCard(str(i + 1), song_name, singer_name, score)
-            if i == 0:
-                self.bestMatchCard = card
-                continue
-            setattr(self, f"MatchCard{i}", card)
+            # Default case if the pattern doesn't match
+            return song_file_name, "Unknown Artist"
 
-            row = (i - 1) // 2  
-            col = (i - 1) % 2
-            self.resultsLayout.addWidget(card, row, col)
+        """Update the result cards with new song similarity data."""
+        # Loop through the array of tuples (songName, similarity)
+        for idx, (song_file_name, similarity) in enumerate(song_similarity_data):
+            song_name, artist = parse_song_name(song_file_name)
+
+            # Update the best match
+            if idx == 0:
+                self.bestMatchCard.updateCard(rank="1", songName=song_name, singerName=artist, similarity=similarity)
+            elif idx == 1:
+                self.MatchCard1.updateCard(rank="2", songName=song_name, singerName=artist, similarity=similarity)
+            elif idx == 2:
+                self.MatchCard2.updateCard(rank="3", songName=song_name, singerName=artist, similarity=similarity)
+            elif idx == 3:
+                self.MatchCard3.updateCard(rank="4", songName=song_name, singerName=artist, similarity=similarity)
+            elif idx == 4:
+                self.MatchCard4.updateCard(rank="5", songName=song_name, singerName=artist, similarity=similarity)
 
     def createLayout(self):
         self.mainLayout = QVBoxLayout()
@@ -112,16 +117,16 @@ class TuneTrackApp(QMainWindow):
         bestMatchLayout.addStretch()
 
         resultsRow = QHBoxLayout()
-        # resultsLayout = QGridLayout()
-        # resultsLayout.addWidget(self.MatchCard1, 0, 0)
-        # resultsLayout.addWidget(self.MatchCard2, 0, 1)
-        # resultsLayout.addWidget(self.MatchCard3, 1, 0)
-        # resultsLayout.addWidget(self.MatchCard4, 1, 1)
+        resultsLayout = QGridLayout()
+        resultsLayout.addWidget(self.MatchCard1, 0, 0)
+        resultsLayout.addWidget(self.MatchCard2, 0, 1)
+        resultsLayout.addWidget(self.MatchCard3, 1, 0)
+        resultsLayout.addWidget(self.MatchCard4, 1, 1)
 
-        self.resultsLayout.setHorizontalSpacing(50)
+        resultsLayout.setHorizontalSpacing(50)
 
         resultsRow.addStretch()
-        resultsRow.addLayout(self.resultsLayout)
+        resultsRow.addLayout(resultsLayout)
         resultsRow.addStretch()
 
         self.mainLayout.addLayout(logoLayout,5)
@@ -143,7 +148,7 @@ class TuneTrackApp(QMainWindow):
         self.logo.setStyleSheet(logo)
         self.slogan.setStyleSheet(slogan)
         self.bestMatchLabel.setAlignment(Qt.AlignCenter)
-       
+
         self.bestMatchLabel.setStyleSheet(bestMatchLabel)
         self.audio1Weight.setStyleSheet(NumberLabelPink)
         self.audio2Weight.setStyleSheet(NumberLabelWhite)
@@ -161,15 +166,15 @@ class TuneTrackApp(QMainWindow):
             lambda: self.playback_widget.add_audio(self.audioCard2)
         )
         self.audioCard2.upload_button.clicked.connect(self.load_audio2)
-        self.weightSlider.valueChanged.connect(self.updateWeightLabels)
-    
+        self.weightSlider.sliderReleased.connect(self.updateWeightLabels)
+
     def updateSliderBasedOnUploads(self):
         if self.audio1 is not None and self.audio2 is None:
-            slider_value = 100  
+            slider_value = 100
         elif self.audio1 is None and self.audio2 is not None:
-            slider_value = 0  
+            slider_value = 0
         else:
-            slider_value = 50  
+            slider_value = 50
 
         self.weightSlider.setValue(slider_value)
         self.updateWeightLabels()
@@ -180,8 +185,8 @@ class TuneTrackApp(QMainWindow):
         # print("audio1: ",self.audio1)
         self.updateSliderBasedOnUploads()
         self.setting_audio()
-        
-    def load_audio2(self):    
+
+    def load_audio2(self):
         self.audio_path2 = self.audioCard2.get_file()
         self.audio2, self.sr2 = Load(self.audio_path2).get_audio_data()
         # print("audio1: ",self.audio2)
@@ -206,6 +211,7 @@ class TuneTrackApp(QMainWindow):
         check = SimilarityCheck()
         check.set_hashed_song(self.hashed_features)
         similar = check.get_similarities() # integrate with the results
+        self.updateResults(similar)
         print(similar)
 
     def updateWeightLabels(self):

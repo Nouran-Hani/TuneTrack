@@ -45,9 +45,9 @@ class ResultCard(QWidget):
         cardBody.addStretch(1)
 
         self.mainLayout.addWidget(self.rank, 3)
-        self.mainLayout.addWidget(self.cover, 10)
         self.mainLayout.addLayout(cardBody, 20)
-        self.mainLayout.addWidget(self.playButton, 5)
+        # self.mainLayout.addWidget(self.playButton, 5)
+        self.mainLayout.addWidget(self.cover, 6)
 
         self.setLayout(self.mainLayout)
 
@@ -63,7 +63,7 @@ class ResultCard(QWidget):
 
         # Style for the cover button
         self.cover.setMinimumSize(70,70)
-        self.cover.setIcon(QIcon(f"Photos/Covers/{songName}.jpeg"))
+        self.cover.setIcon(QIcon("Photos/Button Play.png"))
         self.cover.setIconSize(QSize(100, 100))  # Set icon size to match button width
         self.cover.setStyleSheet("""
             QPushButton {
@@ -152,6 +152,19 @@ class ResultCard(QWidget):
         self.playButton.setFixedSize(int(size * 0.75), int(size * 0.75))
         self.playButton.setIconSize(QSize(int(size * 0.3), int(size * 0.3)))
 
+    def updateCard(self, rank=None, songName=None, singerName=None, similarity=None):
+        """Update the content of the card with new values."""
+        if rank is not None:
+            self.rank.setText(str(rank))  # Update rank text
+        if songName is not None:
+            self.songName.updateText(songName)  # Update song name
+            # self.cover.setIcon(QIcon(f"Photos/Covers/{songName}.jpeg"))  # Update cover image
+        if singerName is not None:
+            self.singerName.setText(singerName)  # Update singer name
+        if similarity is not None:
+            self.similarityBar.setValue(similarity)  # Update similarity bar value
+            self.similarityResult.setText(f"{similarity}%")
+
 
 
 
@@ -182,7 +195,7 @@ class ScrollingLabel(QLabel):
         """Start scrolling when the mouse hovers over the label."""
         if self.fontMetrics().width(self.fullText) > self.width():  # Only scroll if the text is wider
             self.offset = 0  # Reset offset
-            self.timer.start(50)  # Adjust interval for smoother scrolling
+            self.timer.start(150)  # Adjust interval for smoother scrolling
         super().enterEvent(event)
 
     def leaveEvent(self, event):
@@ -199,6 +212,14 @@ class ScrollingLabel(QLabel):
                 self.offset = 0  # Reset offset to loop the text
             visibleText = self.fullText[self.offset:] + " " + self.fullText[:self.offset]
             self.setText(visibleText)
+
+    def updateText(self, new_text):
+        """Update the text and restart scrolling if necessary."""
+        self.fullText = new_text
+        self.setText(self.fullText)  # Update the label's text
+        if self.fontMetrics().width(self.fullText) > self.width():  # Only start scrolling if the text is wide enough
+            self.offset = 0  # Reset offset
+            self.timer.start(50)  # Restart scrolling
 
 if __name__ == "__main__":
     app = QApplication([])
