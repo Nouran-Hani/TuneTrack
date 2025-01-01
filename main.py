@@ -54,6 +54,36 @@ class TuneTrackApp(QMainWindow):
         self.MatchCard3 = ResultCard("4", "Song 4", "Remix", 25)
         self.MatchCard4 = ResultCard("5", "Song 5", "Remix", 10)
 
+        self.createResultCard()
+
+    def createResultCard(self, array=[("Group5-songName_SingerName", 21),
+                                      ("Group5-songName_SingerName", 25),
+                                      ("Group5-songName_SingerName", 24),
+                                      ("Group5-songName_SingerName", 24),
+                                      ("Group5-songName_SingerName", 24)]):
+        self.resultsLayout = QGridLayout()
+
+        def parse_song_info(song_info):
+            try:
+                group, song_singer = song_info.split("-", 1)  # Split by the first "-"
+                song_name, singer_name = song_singer.split("_", 1)  # Split by the first "_"
+                return song_name, singer_name
+            except ValueError:
+                return "Unknown Song", "Unknown Singer"
+
+        for i, (song_info, score) in enumerate(array):
+            song_name, singer_name = parse_song_info(song_info)
+
+            card = ResultCard(str(i + 1), song_name, singer_name, score)
+            if i == 0:
+                self.bestMatchCard = card
+                continue
+            setattr(self, f"MatchCard{i}", card)
+
+            row = (i - 1) // 2  
+            col = (i - 1) % 2
+            self.resultsLayout.addWidget(card, row, col)
+
     def createLayout(self):
         self.mainLayout = QVBoxLayout()
 
@@ -82,16 +112,16 @@ class TuneTrackApp(QMainWindow):
         bestMatchLayout.addStretch()
 
         resultsRow = QHBoxLayout()
-        resultsLayout = QGridLayout()
-        resultsLayout.addWidget(self.MatchCard1, 0, 0)
-        resultsLayout.addWidget(self.MatchCard2, 0, 1)
-        resultsLayout.addWidget(self.MatchCard3, 1, 0)
-        resultsLayout.addWidget(self.MatchCard4, 1, 1)
+        # resultsLayout = QGridLayout()
+        # resultsLayout.addWidget(self.MatchCard1, 0, 0)
+        # resultsLayout.addWidget(self.MatchCard2, 0, 1)
+        # resultsLayout.addWidget(self.MatchCard3, 1, 0)
+        # resultsLayout.addWidget(self.MatchCard4, 1, 1)
 
-        resultsLayout.setHorizontalSpacing(50)
+        self.resultsLayout.setHorizontalSpacing(50)
 
         resultsRow.addStretch()
-        resultsRow.addLayout(resultsLayout)
+        resultsRow.addLayout(self.resultsLayout)
         resultsRow.addStretch()
 
         self.mainLayout.addLayout(logoLayout,5)
