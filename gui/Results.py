@@ -63,6 +63,7 @@ class ResultCard(QWidget):
 
         # Style for the cover button
         self.cover.setMinimumSize(70,70)
+        self.cover.setIcon(QIcon(f"Photos/Covers/{self.songName}.jpeg"))
         self.cover.setStyleSheet("""
             QPushButton {
                 background-color: White;
