@@ -1,14 +1,23 @@
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize, QUrl
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, \
     QPushButton
-
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+import os 
 
 class ResultCard(QWidget):
-    def __init__(self, rank="1", songName="Song Name", singerName="Singer Name", similarity=22):
+    def __init__(self, rank="1", songName="Song Name", singerName="Singer Name", similarity=22,file=None):
         super().__init__()
+        self.original_file_name = file  # Store the original filename
+        self.display_name = songName 
         self.initializeUI(rank, songName, singerName, similarity)
+        self.initializeParameters()
         self.connectUI()
+
+    def initializeParameters(self):
+        self.player = QMediaPlayer()
+        self.is_playing = False
+        self.current_file = None
 
     def initializeUI(self, rank, songName, singerName, similarity):
         self.createUiElements(rank, songName, singerName, similarity)
@@ -142,7 +151,8 @@ class ResultCard(QWidget):
 
 
     def connectUI(self):
-        # This function can be used to connect any buttons or actions
+        self.cover.clicked.connect(self.toggle_playback)
+        self.player.stateChanged.connect(self.on_state_changed)
         print("UI Connection Done")
 
     def resizeEvent(self, event):
@@ -152,11 +162,62 @@ class ResultCard(QWidget):
         self.playButton.setFixedSize(int(size * 0.75), int(size * 0.75))
         self.playButton.setIconSize(QSize(int(size * 0.3), int(size * 0.3)))
 
-    def updateCard(self, rank=None, songName=None, singerName=None, similarity=None):
-        """Update the content of the card with new values."""
+    def on_state_changed(self, state):
+        if state == QMediaPlayer.PlayingState:
+            self.is_playing = True
+        else:
+            self.is_playing = False
+
+    def stop_playback(self):
+        if self.player:
+            self.player.stop()
+            self.is_playing = False
+    
+    def toggle_playback(self):
+        # Stop all other cards' playback
+        main_window = self.window()
+        if hasattr(main_window, 'stop_all_cards_except'):
+            main_window.stop_all_cards_except(self)
+
+        # Use the original file name directly
+        song_path =  self.original_file_name
+        
+        # Try different extensions
+        extensions = ['.wav', '.mp3', '.m4a']
+        found = False
+        
+        for ext in extensions:
+            full_path = song_path + ext
+            if os.path.exists(full_path):
+                if self.current_file != full_path:
+                    self.current_file = full_path
+                    self.player.setMedia(QMediaContent(QUrl.fromLocalFile(full_path)))
+                found = True
+                break
+        
+        if not found:
+            print(f"Could not find audio file for: {self.original_file_name}")
+            return
+
+        # Toggle playback
+        if self.is_playing:
+            self.player.pause()
+            self.is_playing = False
+            self.cover.setIcon(QIcon("Photos/Button Play.png"))
+        else:
+            self.player.play()
+            self.is_playing = True
+            self.cover.setIcon(QIcon("Photos/Button Pause.png"))
+
+
+
+    def updateCard(self, rank=None, songName=None, singerName=None, similarity=None,file=None):
+        self.stop_playback()
         if rank is not None:
             self.rank.setText(str(rank))  # Update rank text
         if songName is not None:
+            self.original_file_name = file  # Store the original filename
+            self.display_name = songName 
             self.songName.updateText(songName)  # Update song name
             # self.cover.setIcon(QIcon(f"Photos/Covers/{songName}.jpeg"))  # Update cover image
         if singerName is not None:

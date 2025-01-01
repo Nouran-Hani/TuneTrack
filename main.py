@@ -8,6 +8,7 @@ from gui.style import weightSlider,logo,slogan,bestMatchLabel,NumberLabelPink,Nu
 from core.load import Load
 from core.audio_processing import Processing
 from core.table import SimilarityCheck
+import re
 
 class TuneTrackApp(QMainWindow):
     def __init__(self):
@@ -55,22 +56,43 @@ class TuneTrackApp(QMainWindow):
         self.MatchCard4 = ResultCard("5", "Song 5", "Remix", 10)
 
     def updateResults(self, song_similarity_data):
-        import re
-
-        import re
 
         def parse_song_name(song_file_name):
-            """Parse the song name and artist from the file name."""
-            # Regular expression to capture the group name, song name, and artist name
-            match = re.match(r"([A-Za-z0-9_]+)_([A-Za-z0-9_ ]+)__([A-Za-z0-9_() ]+)", song_file_name)
+           
+            type_keywords = {
+                'vocals': 'Vocals',
+                'lyrics': 'Vocals',
+                'instrument': 'Instruments',
+                'instruments': 'Instruments',
+                'music': 'Instruments',
+                'full': 'Full',
+                'original': 'Full'
+            }
 
-            if match:
-                song_name = match.group(2).strip()  # Extract song name
-                artist = match.group(3).strip()  # Extract artist name
-                return song_name, artist
+            # Handle square brackets format
+            bracket_match = re.search(r"\[\s*(music|vocals|instrument|instruments|lyrics)\s*\]", song_file_name, re.IGNORECASE)
+            if bracket_match:
+                raw_type = bracket_match.group(1).strip().lower()
+                song_type = type_keywords.get(raw_type, "Full")
+                return song_file_name.strip(), song_type
 
-            # Default case if the pattern doesn't match
-            return song_file_name, "Unknown Artist"
+            # Handle underscore format 
+            underscore_match = re.match(r"^.+_([^[\]]+)$", song_file_name)
+            if underscore_match:
+                raw_type = underscore_match.group(1).strip().lower()
+                song_type = type_keywords.get(raw_type, "Full")
+                return song_file_name.strip(), song_type
+
+            # Handle parentheses format
+            paren_match = re.match(r"(.+?)\(\s*(.+?)\s*\)(?:.*)?", song_file_name, re.IGNORECASE)
+            if paren_match:
+                song_name = paren_match.group(1).strip()
+                raw_type = paren_match.group(2).strip().lower()
+                song_type = type_keywords.get(raw_type, "Full")
+                return song_name + f" ({raw_type})", song_type
+
+            return song_file_name.strip(), "Full"
+
 
         """Update the result cards with new song similarity data."""
         # Loop through the array of tuples (songName, similarity)
@@ -79,15 +101,22 @@ class TuneTrackApp(QMainWindow):
 
             # Update the best match
             if idx == 0:
-                self.bestMatchCard.updateCard(rank="1", songName=song_name, singerName=artist, similarity=similarity)
+                self.bestMatchCard.updateCard(rank="1", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
             elif idx == 1:
-                self.MatchCard1.updateCard(rank="2", songName=song_name, singerName=artist, similarity=similarity)
+                self.MatchCard1.updateCard(rank="2", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
             elif idx == 2:
-                self.MatchCard2.updateCard(rank="3", songName=song_name, singerName=artist, similarity=similarity)
+                self.MatchCard2.updateCard(rank="3", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
             elif idx == 3:
-                self.MatchCard3.updateCard(rank="4", songName=song_name, singerName=artist, similarity=similarity)
+                self.MatchCard3.updateCard(rank="4", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
             elif idx == 4:
-                self.MatchCard4.updateCard(rank="5", songName=song_name, singerName=artist, similarity=similarity)
+                self.MatchCard4.updateCard(rank="5", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
+
+    def stop_all_cards_except(self, active_card):
+        """Stop playback on all cards except the active card."""
+        for card in [self.bestMatchCard, self.MatchCard1, self.MatchCard2, self.MatchCard3, self.MatchCard4]:
+            if card is not active_card:
+                card.stop_playback()
+
 
     def createLayout(self):
         self.mainLayout = QVBoxLayout()
