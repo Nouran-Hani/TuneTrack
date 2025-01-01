@@ -13,7 +13,7 @@ class ResultCard(QWidget):
     def initializeUI(self, rank, songName, singerName, similarity):
         self.createUiElements(rank, songName, singerName, similarity)
         self.createLayout()
-        self.styleUi()
+        self.styleUi(songName)
 
     def createUiElements(self, rank, songName, singerName, similarity):
         self.rank = QLabel(rank)
@@ -51,7 +51,7 @@ class ResultCard(QWidget):
 
         self.setLayout(self.mainLayout)
 
-    def styleUi(self):
+    def styleUi(self,songName):
         self.mainColor = "#FE7191"
         self.accentColor = "White"
         self.setAttribute(Qt.WA_StyledBackground, True)
@@ -63,7 +63,8 @@ class ResultCard(QWidget):
 
         # Style for the cover button
         self.cover.setMinimumSize(70,70)
-        self.cover.setIcon(QIcon(f"Photos/Covers/{self.songName}.jpeg"))
+        self.cover.setIcon(QIcon(f"Photos/Covers/{songName}.jpeg"))
+        self.cover.setIconSize(QSize(100, 100))  # Set icon size to match button width
         self.cover.setStyleSheet("""
             QPushButton {
                 background-color: White;

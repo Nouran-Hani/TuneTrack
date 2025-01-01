@@ -119,7 +119,7 @@ class SimilarityCheck:
         Initialize the song database by loading data from a JSON file.
         :param json_file_path: Path to the JSON file containing song data.
         """
-        self.json_file_path = 'TuneTrack/core/final_hashed_data.json'
+        self.json_file_path = 'core/final_hashed_data.json'
         self.hashed = None
         self.songs = []
         self.similarities = []

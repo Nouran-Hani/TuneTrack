@@ -56,7 +56,7 @@ class TuneTrackApp(QMainWindow):
 
         self.createResultCard()
 
-    def createResultCard(self, array=[("Group5-songName_SingerName", 21),
+    def createResultCard(self, array=[("Group5-A sky full of stars_SingerName", 21),
                                       ("Group5-songName_SingerName", 25),
                                       ("Group5-songName_SingerName", 24),
                                       ("Group5-songName_SingerName", 24),
