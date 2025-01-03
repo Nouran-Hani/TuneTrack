@@ -106,7 +106,7 @@ class Processing:
         self.title = title
         self.audio = audio
 
-        self.spectrogram = np.abs(librosa.stft(self.audio, n_fft=1024, hop_length=512))
+        self.spectrogram = np.abs(librosa.stft(self.audio, n_fft=4096, hop_length=512))
         self.feature_vector = []
         self.hash_hex = None
 
@@ -119,37 +119,74 @@ class Processing:
         peak_image = self.visualize_peaks(D_db, peaks)
         self.hash_hex = self.compute_phash(peak_image)
 
-    def extract_peaks(self, D_db, neighborhood_size=3):
-        peaks = scipy.ndimage.maximum_filter(D_db, size=neighborhood_size)
+    def extract_peaks(self, D_db, threshold=1,neighborhood_size=25):
+        filtered_peaks = scipy.ndimage.maximum_filter(D_db, size=neighborhood_size)
+        # Create a binary mask for peaks, where the value equals the local maximum
+        peaks = (D_db == filtered_peaks)
+
+        # Apply threshold to remove less significant peaks
+        peaks = peaks & (D_db >= threshold)
         return peaks
 
-    def visualize_peaks(self, D_db, peaks, peak_intensity=255, surrounding_intensity=50):
+    def visualize_peaks(self, D_db, peaks, peak_intensity=255, region_size=10,surrounding_intensity=0):
+
+        # Initialize the peak map with zeros
         peak_image = np.zeros_like(D_db)
-        D_db_normalized = np.clip(D_db, -100, 100)
         # Set the pixels at the detected peaks to the desired intensity
-        peak_image[peaks == D_db_normalized] = peak_intensity
+        peak_image[peaks == D_db] = peak_intensity
+
+        # Assign surrounding areas a lower intensity (non-peaks)
+        peak_image[peak_image == 0] = surrounding_intensity
+
+        # Create a copy of the peak map to visualize around peaks
+        visualized_peak_image = np.copy(peak_image)
 
         # Set the surrounding pixels to a lower intensity
-        for i in range(D_db_normalized.shape[0]):
-            for j in range(D_db_normalized.shape[1]):
+        for i in range(D_db.shape[0]):
+            for j in range(D_db.shape[1]):
                 if peak_image[i, j] == 0:  # If it's not already a peak
                     peak_image[i, j] = surrounding_intensity
-        return peak_image
+        for row in range(D_db.shape[0]):
+            for col in range(D_db.shape[1]):
+                if peak_image[row, col] == peak_intensity:  # If it's a peak
+                    # Define the start and end of the region around the peak
+                    y_start = max(0, row - region_size)
+                    y_end = min(D_db.shape[0], row + region_size)
+                    x_start = max(0, col - region_size)
+                    x_end = min(D_db.shape[1], col + region_size)
+
+                    # Fill the target region with a fixed intensity (200), keeping the peak as 255
+                    visualized_peak_image[y_start:y_end, x_start:x_end] = 200
+                    visualized_peak_image[row, col] = peak_intensity  # Ensure the peak remains at the center
+
+        return visualized_peak_image
+
+
 
     def compute_phash(self, peak_image):
-        pil_image = Image.fromarray(peak_image)
-        pil_image_resized = pil_image.resize((32, 32), Resampling.LANCZOS)  # Resize to 32x32 for consistency
-        pil_image_grayscale = pil_image_resized.convert("L")  # Convert to grayscale
-        image_array = np.array(pil_image_grayscale)
-        image_array = np.clip(image_array, 0, 255)  # Ensure pixel values are within the valid range
-
-        # Convert back to PIL Image after normalization
-        pil_image_normalized = Image.fromarray(image_array)
-
-        # Compute the perceptual hash of the processed image
-        hash_value = str(imagehash.phash(pil_image_normalized))
+        # pil_image = Image.fromarray(peak_image)
+        # # pil_image_resized = pil_image.resize((32, 32), Resampling.LANCZOS)  # Resize to 32x32 for consistency
+        # # pil_image_grayscale = pil_image_resized.convert("L")  # Convert to grayscale
+        # image_array = np.array(pil_image)
+        # image_array = np.clip(image_array, 0, 255)  # Ensure pixel values are within the valid range
+        #
+        # # Convert back to PIL Image after normalization
+        # pil_image_normalized = Image.fromarray(image_array)
+        #
+        # # Compute the perceptual hash of the processed image
+        # hash_value = str(imagehash.phash(pil_image_normalized))
         # print("processing class", hash_value)
+        # Convert the numpy array to a PIL Image
+        pil_image = Image.fromarray(peak_image)
 
+        # Optionally resize the image for consistency (e.g., resizing to 32x32)
+        pil_image_resized = pil_image.resize((32, 32), Image.Resampling.LANCZOS)
+
+        # Convert the resized image to grayscale (single channel)
+        pil_image_grayscale = pil_image_resized.convert("L")
+
+        # Compute the perceptual hash of the grayscale image
+        hash_value = str(imagehash.phash(pil_image_grayscale))
         return hash_value
 
     def get_hashed_features(self):

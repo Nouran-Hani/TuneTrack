@@ -5,9 +5,9 @@ import numpy as np
 from load import Load
 
 class Training(Processing):
-    def __init__(self, audio, title, sr):
-        super().__init__(audio, title, sr)
-        self.file_path = "TuneTrack/data/final_hashed_data.json"
+    def __init__(self, audio, title):
+        super().__init__(audio, title)
+        self.file_path = "../data/final_hashed_data3.json"
         self.save_hash_to_file()
 
     def save_hash_to_file(self):
@@ -36,14 +36,14 @@ class Training(Processing):
             print(f"Failed to save {self.title}: {e}")
 
 # Training
-audio_folder = "TuneTrack/Music"
+audio_folder = "../Music"
 
 for filename in os.listdir(audio_folder):
     file_path = os.path.join(audio_folder, filename)
     title = os.path.splitext(filename)[0]
     try:
         audio, sr = Load(file_path).get_audio_data()
-        training_instance = Training(audio, title, sr)
+        training_instance = Training(audio, title)
     except Exception as e:
         print(f"Failed to process {title}: {e}")
 

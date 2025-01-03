@@ -119,7 +119,7 @@ class SimilarityCheck:
         Initialize the song database by loading data from a JSON file.
         :param json_file_path: Path to the JSON file containing song data.
         """
-        self.json_file_path = 'core/final_hashed_data.json'
+        self.json_file_path = '../data/final_hashed_data3.json'
         self.hashed = None
         self.songs = []
         self.similarities = []
@@ -194,13 +194,13 @@ class SimilarityCheck:
         self.compare_with_query()
 
     def get_similarities(self):
-        return self.similarities[:5]  # Return the top 5 most similar songs
+        return self.similarities[:10]  # Return the top 5 most similar songs
 
 
 # Example Usage:
 song_db = SimilarityCheck()
 
-query_song_path = "9649a1563bcd13cb"
+query_song_path = "a5a5a5a5a5a5a5a5"
 sorted_songs = song_db.set_hashed_song(query_song_path)
 sort = song_db.get_similarities()
 
