@@ -31,12 +31,11 @@
   - **Vocals Only**
 
 - **Feature Extraction**: Extracts key audio features such as:
-  - MFCCs (Mel-frequency cepstral coefficients)
-  - Spectral Centroid
-  - Zero-crossing Rate
-  - Chroma Features
+  - {Feature 1}
+  - {Feature 2}
+  - {Feature 3}
 
-- **Perceptual Hashing**: Uses perceptual hash functions to create compact representations of audio features for efficient similarity detection.
+- **Perceptual Hashing**: Uses perceptual hash functions to create compact representations of audio features for efficient similarity detection. {Need edit}
 
 - **Similarity Detection**: Compares input audio files against a database of songs and generates a ranked list of similar songs with a similarity index.
 
