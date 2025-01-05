@@ -1,9 +1,13 @@
-from PyQt5.QtCore import Qt, QSize, QUrl
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, \
     QPushButton
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-import os 
+import os
+from PyQt5.QtCore import Qt, QUrl, QTimer, QSize 
+
+
 
 class ResultCard(QWidget):
     def __init__(self, rank="1", songName="Song Name", singerName="Singer Name", similarity=22,file=None):
@@ -22,12 +26,12 @@ class ResultCard(QWidget):
     def initializeUI(self, rank, songName, singerName, similarity):
         self.createUiElements(rank, songName, singerName, similarity)
         self.createLayout()
-        self.styleUi(songName)
+        self.styleUi()
 
     def createUiElements(self, rank, songName, singerName, similarity):
         self.rank = QLabel(rank)
         self.cover = QPushButton()
-        self.songName = ScrollingLabel(songName)
+        self.songName = ScrollingLabel(songName) 
         self.singerName = QLabel(singerName)
         self.similarityBar = QProgressBar()
         self.similarityBar.setMinimum(0)
@@ -53,27 +57,24 @@ class ResultCard(QWidget):
         cardBody.addWidget(self.similarityBar)
         cardBody.addStretch(1)
 
+        # Adjust the proportions of the widgets in the main layout
         self.mainLayout.addWidget(self.rank, 3)
-        self.mainLayout.addLayout(cardBody, 20)
-        # self.mainLayout.addWidget(self.playButton, 5)
-        self.mainLayout.addWidget(self.cover, 6)
+        self.mainLayout.addWidget(self.cover, 10)
+        self.mainLayout.addLayout(cardBody, 30)
+        self.mainLayout.addWidget(self.playButton, 5)
 
         self.setLayout(self.mainLayout)
 
-    def styleUi(self,songName):
+    def styleUi(self):
         self.mainColor = "#FE7191"
         self.accentColor = "White"
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setStyleSheet(f"background-color: #2a2a2a;  border-radius:12px;")
 
         self.setMinimumWidth(400)
-        self.setMaximumWidth(500)
         self.setMaximumHeight(200)
 
         # Style for the cover button
-        self.cover.setMinimumSize(70,70)
-        self.cover.setIcon(QIcon("Photos/Button Play.png"))
-        self.cover.setIconSize(QSize(100, 100))  # Set icon size to match button width
         self.cover.setStyleSheet("""
             QPushButton {
                 background-color: White;
@@ -89,24 +90,26 @@ class ResultCard(QWidget):
                 color: {self.mainColor};
                 font-family: 'Roboto';
                 font-weight: Bold;
-                font-size: 35px;
+                font-size: 25px;
                 border: 1px solid #FF0000;
                 padding: 5px;
                 border: none;
             }}
         """)
-        #
-        # self.songName.setStyleSheet(f"""
-        #     QLabel {{
-        #         color: {self.mainColor};
-        #         font-family: 'Roboto';
-        #         font-weight: Bold;
-        #         font-size: 20px;
-        #         padding: 5px;
-        #         border: none;
-        #     }}
-        # """)
 
+        # Style for song name label
+        self.songName.setStyleSheet(f"""
+            QLabel {{
+                color: {self.mainColor};
+                font-family: 'Roboto';
+                font-weight: Bold;
+                font-size: 20px;
+                padding: 5px;
+                border: none;
+            }}
+        """)
+
+        # Style for singer name label
         self.singerName.setStyleSheet(f"""
             QLabel {{
                 color: {self.accentColor};
@@ -118,18 +121,23 @@ class ResultCard(QWidget):
             }}
         """)
 
+        # Style for similarity result label
         self.similarityResult.setStyleSheet(f"""
             QLabel {{
-                color: {self.mainColor};
+                color: {self.accentColor};
                 font-family: 'Roboto';
-                font-weight: Bold;
+                font-weight: semiBold;
                 font-size: 25px;
                 border: 1px solid #009688;
                 padding: 5px;
                 border: none;
             }}
         """)
+
+        # Align similarity result to the right
         self.similarityResult.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+
+        # Style for similarity progress bar
         self.similarityBar.setStyleSheet(f"""
             QProgressBar {{
                 min-height: 12px;
@@ -145,22 +153,23 @@ class ResultCard(QWidget):
         """)
 
         self.similarityBar.setFormat("")  # Remove the text from the QProgressBar
-        self.playButton.setMinimumSize(60,60)
         self.playButton.setFlat(True)
         self.playButton.setStyleSheet("border: none;")
 
 
     def connectUI(self):
-        self.cover.clicked.connect(self.toggle_playback)
+        self.playButton.clicked.connect(self.toggle_playback)
         self.player.stateChanged.connect(self.on_state_changed)
-        print("UI Connection Done")
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
         size = self.cover.width()  # Use width as the reference to adjust the size
         self.cover.setFixedSize(size, size)
+        self.cover.setIconSize(QSize(size, size))
         self.playButton.setFixedSize(int(size * 0.75), int(size * 0.75))
         self.playButton.setIconSize(QSize(int(size * 0.3), int(size * 0.3)))
+
+
 
     def on_state_changed(self, state):
         if state == QMediaPlayer.PlayingState:
@@ -172,7 +181,7 @@ class ResultCard(QWidget):
         if self.player:
             self.player.stop()
             self.is_playing = False
-            self.cover.setIcon(QIcon("Photos/Button Play.png"))
+            self.playButton.setIcon(QIcon("Photos/Button Play.png"))
     
     def toggle_playback(self):
         # Stop all other cards' playback
@@ -203,28 +212,29 @@ class ResultCard(QWidget):
         if self.is_playing:
             self.player.pause()
             self.is_playing = False
-            self.cover.setIcon(QIcon("Photos/Button Play.png"))
+            self.playButton.setIcon(QIcon("Photos/Button Play.png"))
         else:
             self.player.play()
             self.is_playing = True
-            self.cover.setIcon(QIcon("Photos/Button Pause.png"))
+            self.playButton.setIcon(QIcon("Photos/Button Pause.png"))
 
 
 
 
-    def updateCard(self, rank=None, songName=None, singerName=None, similarity=None,file=None):
+    def updateCard(self, rank=None, songName=None, singerName=None, similarity=None, file=None, cover_path=None):
         self.stop_playback()
         if rank is not None:
-            self.rank.setText(str(rank))  # Update rank text
+            self.rank.setText(str(rank))
         if songName is not None:
             self.original_file_name = file  # Store the original filename
             self.display_name = songName 
-            self.songName.updateText(songName)  # Update song name
-            # self.cover.setIcon(QIcon(f"Photos/Covers/{songName}.jpeg"))  # Update cover image
+            self.songName.updateText(songName)
+            if cover_path is not None:
+                self.cover.setIcon(QIcon(cover_path))
         if singerName is not None:
-            self.singerName.setText(singerName)  # Update singer name
+            self.singerName.setText(singerName)
         if similarity is not None:
-            self.similarityBar.setValue(similarity)  # Update similarity bar value
+            self.similarityBar.setValue(similarity)
             self.similarityResult.setText(f"{similarity}%")
 
 
@@ -289,6 +299,6 @@ if __name__ == "__main__":
     resultCard = ResultCard()
     mainWindow.setCentralWidget(resultCard)
     mainWindow.setWindowTitle("Result Card Demo")
-    mainWindow.resize(400, 100)  # You can adjust this as needed
+    mainWindow.resize(400, 100)
     mainWindow.show()
     app.exec_()

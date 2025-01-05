@@ -48,69 +48,94 @@ class TuneTrackApp(QMainWindow):
         self.playback_widget = AudioCardPlayback()
 
         self.bestMatchLabel = QLabel("Best Match")
-        # should be in function
-        self.bestMatchCard = ResultCard("1", "Song 1", "Remix", 55)
-        self.MatchCard1 = ResultCard("2", "JSJ 2", "Remix", 40)
-        self.MatchCard2 = ResultCard("3", "Song 3", "Remix", 30)
-        self.MatchCard3 = ResultCard("4", "Song 4", "Remix", 25)
-        self.MatchCard4 = ResultCard("5", "Song 5", "Remix", 10)
+
+        self.bestMatchCard = ResultCard("1", "Song 1", "Song Type", 55)
+        self.MatchCard1 = ResultCard("2", "Song 2", "Song Type", 40)
+        self.MatchCard2 = ResultCard("3", "Song 3", "Song Type", 30)
+        self.MatchCard3 = ResultCard("4", "Song 4", "Song Type", 25)
+        self.MatchCard4 = ResultCard("5", "Song 5", "Song Type", 10)
 
     def updateResults(self, song_similarity_data):
 
         def parse_song_name(song_file_name):
-           
             type_keywords = {
                 'vocals': 'Vocals',
+                'vocal': 'Vocals',
                 'lyrics': 'Vocals',
                 'instrument': 'Instruments',
                 'instruments': 'Instruments',
                 'music': 'Instruments',
-                'full': 'Full',
-                'original': 'Full'
+                'full': 'Full Song',
+                'original': 'Full Song'
             }
 
-
-            # Handle square brackets format
-            bracket_match = re.search(r"\[\s*(music|vocals|instrument|instruments|lyrics)\s*\]", song_file_name, re.IGNORECASE)
-            if bracket_match:
-                raw_type = bracket_match.group(1).strip().lower()
+            clean_name = song_file_name.strip()
+            
+            # square brackets format
+            square_bracket_match = re.search(r"\[\s*(music|vocals|instrument|instruments|lyrics)\s*\]", song_file_name, re.IGNORECASE)
+            if square_bracket_match:
+                clean_name = re.sub(r"\[\s*(music|vocals|instrument|instruments|lyrics)\s*\]", "", song_file_name, flags=re.IGNORECASE).strip()
+                raw_type = square_bracket_match.group(1).strip().lower()
                 song_type = type_keywords.get(raw_type, "Full")
-                return song_file_name.strip(), song_type
+                return song_file_name.strip(), song_type, clean_name
 
-            # Handle underscore format 
-            underscore_match = re.match(r"^.+_([^[\]]+)$", song_file_name)
+            # underscore format 
+            underscore_match = re.match(r"^([^_]+)_(.+?)_([^_]+)$", song_file_name)
             if underscore_match:
-                raw_type = underscore_match.group(1).strip().lower()
-                song_type = type_keywords.get(raw_type, "Full")
-                return song_file_name.strip(), song_type
+                group_name = underscore_match.group(1).strip()
+                song_name = underscore_match.group(2).strip()
+                raw_type = underscore_match.group(3).strip().lower()                
+                clean_name = song_name
+                clean_name = clean_name.strip()
+                clean_name = clean_name.title()
+                song_display = f"{group_name}_{song_name} ({raw_type})"
+                song_type = type_keywords.get(raw_type, "Full Song")
+                
+                return song_display, song_type, clean_name
 
-            # Handle parentheses format
-            paren_match = re.match(r"(.+?)\(\s*(.+?)\s*\)(?:.*)?", song_file_name, re.IGNORECASE)
-            if paren_match:
-                song_name = paren_match.group(1).strip()
-                raw_type = paren_match.group(2).strip().lower()
+            # single underscore format
+            single_underscore_match = re.match(r"^(.+)_([^_]+)$", song_file_name)
+            if single_underscore_match:
+                clean_name = single_underscore_match.group(1).strip()
+                song_display = clean_name + f" ({single_underscore_match.group(2).strip()})"
+                raw_type = single_underscore_match.group(2).strip().lower()
                 song_type = type_keywords.get(raw_type, "Full")
-                return song_name + f" ({raw_type})", song_type
+                return song_display, song_type, clean_name
 
-            return song_file_name.strip(), "Full"
+            # Parentheses format
+            Parentheses_match = re.match(r"(.+?)\(\s*(.+?)\s*\)(?:.*)?", song_file_name, re.IGNORECASE)
+            if Parentheses_match:
+                clean_name = Parentheses_match.group(1).strip()
+                song_display = clean_name + f" ({Parentheses_match.group(2).strip()})"
+                raw_type = Parentheses_match.group(2).strip().lower()
+                song_type = type_keywords.get(raw_type, "Full")
+                return song_display, song_type, clean_name
+
+            return song_file_name.strip(), "Full", clean_name
 
 
         """Update the result cards with new song similarity data."""
         # Loop through the array of tuples (songName, similarity)
         for idx, (song_file_name, similarity) in enumerate(song_similarity_data):
-            song_name, artist = parse_song_name(song_file_name)
+            song_name, artist, clean_name = parse_song_name(song_file_name)
+            cover_path = f"Photos/Covers/{clean_name}.jpeg"
 
             # Update the best match
             if idx == 0:
-                self.bestMatchCard.updateCard(rank="1", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
+                self.bestMatchCard.updateCard(rank="1", songName=song_name, singerName=artist, 
+                                            similarity=similarity, file=song_file_name, cover_path=cover_path)
             elif idx == 1:
-                self.MatchCard1.updateCard(rank="2", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
+                self.MatchCard1.updateCard(rank="2", songName=song_name, singerName=artist, 
+                                        similarity=similarity, file=song_file_name, cover_path=cover_path)
             elif idx == 2:
-                self.MatchCard2.updateCard(rank="3", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
+                self.MatchCard2.updateCard(rank="3", songName=song_name, singerName=artist, 
+                                        similarity=similarity, file=song_file_name, cover_path=cover_path)
             elif idx == 3:
-                self.MatchCard3.updateCard(rank="4", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
+                self.MatchCard3.updateCard(rank="4", songName=song_name, singerName=artist, 
+                                        similarity=similarity, file=song_file_name, cover_path=cover_path)
             elif idx == 4:
-                self.MatchCard4.updateCard(rank="5", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
+                self.MatchCard4.updateCard(rank="5", songName=song_name, singerName=artist, 
+                                        similarity=similarity, file=song_file_name, cover_path=cover_path)
 
     def stop_all_cards_except(self, active_card):
         for card in [self.bestMatchCard, self.MatchCard1, self.MatchCard2, self.MatchCard3, self.MatchCard4]:
@@ -240,7 +265,7 @@ class TuneTrackApp(QMainWindow):
         self.hashed_features = self.process.get_hashed_features()
         check = SimilarityCheck()
         check.set_hashed_song(self.hashed_features)
-        similar = check.get_similarities() # integrate with the results
+        similar = check.get_similarities() 
         self.updateResults(similar)
         print(similar)
 
