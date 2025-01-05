@@ -69,6 +69,7 @@ class TuneTrackApp(QMainWindow):
                 'original': 'Full'
             }
 
+
             # Handle square brackets format
             bracket_match = re.search(r"\[\s*(music|vocals|instrument|instruments|lyrics)\s*\]", song_file_name, re.IGNORECASE)
             if bracket_match:
@@ -112,10 +113,10 @@ class TuneTrackApp(QMainWindow):
                 self.MatchCard4.updateCard(rank="5", songName=song_name, singerName=artist, similarity=similarity,file=song_file_name)
 
     def stop_all_cards_except(self, active_card):
-        """Stop playback on all cards except the active card."""
         for card in [self.bestMatchCard, self.MatchCard1, self.MatchCard2, self.MatchCard3, self.MatchCard4]:
             if card is not active_card:
                 card.stop_playback()
+                
 
 
     def createLayout(self):

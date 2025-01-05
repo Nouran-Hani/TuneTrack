@@ -172,6 +172,7 @@ class ResultCard(QWidget):
         if self.player:
             self.player.stop()
             self.is_playing = False
+            self.cover.setIcon(QIcon("Photos/Button Play.png"))
     
     def toggle_playback(self):
         # Stop all other cards' playback
@@ -179,24 +180,23 @@ class ResultCard(QWidget):
         if hasattr(main_window, 'stop_all_cards_except'):
             main_window.stop_all_cards_except(self)
 
-        # Use the original file name directly
-        song_path =  self.original_file_name
-        
-        # Try different extensions
-        extensions = ['.wav', '.mp3', '.m4a']
+        # Construct the full path for the audio file
+        base_path = "Music/"
+        file_name = self.original_file_name
+        extensions = ['.wav']
         found = False
-        
+
         for ext in extensions:
-            full_path = song_path + ext
+            full_path = os.path.join(base_path, file_name + ext)  # Combine path, file name, and extension
             if os.path.exists(full_path):
                 if self.current_file != full_path:
                     self.current_file = full_path
                     self.player.setMedia(QMediaContent(QUrl.fromLocalFile(full_path)))
                 found = True
                 break
-        
+
         if not found:
-            print(f"Could not find audio file for: {self.original_file_name}")
+            print(f"Could not find audio file: {file_name}")
             return
 
         # Toggle playback
@@ -208,6 +208,7 @@ class ResultCard(QWidget):
             self.player.play()
             self.is_playing = True
             self.cover.setIcon(QIcon("Photos/Button Pause.png"))
+
 
 
 
