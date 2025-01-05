@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img alt="project" title="#About" src="Readme/main.gif" />
+    <img alt="project" title="#About" src="Readme/main.png" />
 </h1>
 
 <h1 align="center">WTS | What The Song</h1>
