@@ -63,7 +63,7 @@ class ResultCard(QWidget):
 
         # Style for the cover button
         self.cover.setMinimumSize(70,70)
-        self.cover.setIcon(QIcon("Photos/Button Play.png"))
+        self.cover.setIcon(QIcon("TuneTrack/Photos/Button Play.png"))
         self.cover.setIconSize(QSize(100, 100))  # Set icon size to match button width
         self.cover.setStyleSheet("""
             QPushButton {

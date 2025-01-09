@@ -215,6 +215,7 @@ class TuneTrackApp(QMainWindow):
         print(similar)
 
     def updateWeightLabels(self):
+        self.audio = None
         value = self.weightSlider.value()
         self.audio1Weight.setText(f"{value}")
         self.audio2Weight.setText(f"{100 - value}")

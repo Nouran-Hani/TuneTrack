@@ -129,12 +129,12 @@ class AudioCardPlayback(QWidget):
         if any(player.state() == QMediaPlayer.PlayingState for player in self.players):
             for player in self.players:
                 player.pause()
-            self.play_button.setIcon(QIcon('Photos/Button Play.png'))
+            self.play_button.setIcon(QIcon('TuneTrack/Photos/Button Play.png'))
             self.timer.stop()
             self.was_playing = False
         else:
             current_pos = self.progress.value()
-            self.play_button.setIcon(QIcon('Photos/Button Pause.png'))
+            self.play_button.setIcon(QIcon('TuneTrack/Photos/Button Pause.png'))
             for player in self.players:
                 player.setPosition(current_pos)
                 player.play()
@@ -145,7 +145,7 @@ class AudioCardPlayback(QWidget):
     def stop_playback(self):
         for player in self.players:
             player.stop()
-        self.play_button.setIcon(QIcon('Photos/Button Pause.png')) 
+        self.play_button.setIcon(QIcon('TuneTrack/Photos/Button Pause.png')) 
         self.timer.stop()
         self.progress.setValue(0)
         self.time_label.setText("0:00")
