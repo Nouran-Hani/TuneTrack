@@ -30,7 +30,7 @@
   - **Music Only**
   - **Vocals Only**
 
-- **Feature Extraction**: Extracts key audio features are the peaks of spectrogram which is the regions where the frequency is most dominant.
+- **Feature Extraction**: The Extracted key audio features are the peaks of spectrogram which is the regions where the frequency is most dominant.
 
 - **Perceptual Hashing**: Uses perceptual hash functions to create compact representations of audio features for efficient similarity detection.
 
