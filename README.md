@@ -30,12 +30,9 @@
   - **Music Only**
   - **Vocals Only**
 
-- **Feature Extraction**: Extracts key audio features such as:
-  - {Feature 1}
-  - {Feature 2}
-  - {Feature 3}
+- **Feature Extraction**: Extracts key audio features are the peaks of spectrogram which is the regions where the frequency is most dominant.
 
-- **Perceptual Hashing**: Uses perceptual hash functions to create compact representations of audio features for efficient similarity detection. {Need edit}
+- **Perceptual Hashing**: Uses perceptual hash functions to create compact representations of audio features for efficient similarity detection.
 
 - **Similarity Detection**: Compares input audio files against a database of songs and generates a ranked list of similar songs with a similarity index.
 
