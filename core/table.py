@@ -9,7 +9,7 @@ class SimilarityCheck:
         Initialize the song database by loading data from a JSON file.
         :param json_file_path: Path to the JSON file containing song data.
         """
-        self.json_file_path = 'TuneTrack/core/hash.json'
+        self.json_file_path = 'TuneTrack/core/spectrohash.json'
         self.hashed = None
         self.songs = []
         self.similarities = []
@@ -90,7 +90,7 @@ class SimilarityCheck:
 # Example Usage:
 song_db = SimilarityCheck()
 
-query_song_path = "b0cf90e0c0b7bf83"
+query_song_path = "d5d5cfcdc1c9c180"
 sorted_songs = song_db.set_hashed_song(query_song_path)
 sort = song_db.get_similarities()
 

@@ -7,7 +7,7 @@ from load import Load
 class Training(Processing):
     def __init__(self, audio, title):
         super().__init__(audio, title)
-        self.file_path = "TuneTrack/data/hash.json"
+        self.file_path = "TuneTrack/data/spectrohash.json"
         self.save_hash_to_file()
 
     def save_hash_to_file(self):

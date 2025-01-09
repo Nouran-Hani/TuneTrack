@@ -206,6 +206,46 @@ from PIL.Image import Resampling
 #         return self.hash_hex
 
 
+# class Processing:
+#     def __init__(self, audio, title):
+#         self.title = title
+#         self.audio = audio
+
+#         # Compute the spectrogram
+#         self.spectrogram = np.abs(librosa.stft(self.audio, n_fft=4096, hop_length=512))
+#         self.hash_hex = None
+
+#         # Compute features and hash
+#         self.compute_features()
+
+#     def compute_features(self):
+#         D_db = librosa.amplitude_to_db(self.spectrogram, ref=np.max)
+#         fingerprint = self.extract_fingerprint(D_db)
+#         self.hash_hex = self.compute_phash(fingerprint)
+
+#     def extract_fingerprint(self, D_db, freq_bins=10, time_bins=10):
+#         # Divide the spectrogram into frequency and time bins
+#         freq_split = np.array_split(D_db, freq_bins, axis=0)
+#         time_split = [np.array_split(segment, time_bins, axis=1) for segment in freq_split]
+
+#         # Extract the max value from each segment to create a compact fingerprint
+#         fingerprint = np.array([[np.max(segment) for segment in row] for row in time_split])
+#         return fingerprint
+
+#     def compute_phash(self, fingerprint):
+#         # Convert the fingerprint matrix to an image-like array
+#         fingerprint_image = np.interp(fingerprint, (fingerprint.min(), fingerprint.max()), (0, 255)).astype(np.uint8)
+#         pil_image = Image.fromarray(fingerprint_image)
+#         pil_image_resized = pil_image.resize((32, 32), Image.Resampling.LANCZOS)
+#         pil_image_grayscale = pil_image_resized.convert("L")
+#         hash_value = imagehash.phash(pil_image_grayscale)
+#         return str(hash_value)
+
+#     def get_hashed_features(self):
+#         return self.hash_hex
+
+
+# Hashing using Spectrogram
 class Processing:
     def __init__(self, audio, title):
         self.title = title
@@ -215,31 +255,27 @@ class Processing:
         self.spectrogram = np.abs(librosa.stft(self.audio, n_fft=4096, hop_length=512))
         self.hash_hex = None
 
-        # Compute features and hash
-        self.compute_features()
+        # Compute hash directly from the spectrogram
+        self.compute_hash_from_spectrogram()
 
-    def compute_features(self):
+    def compute_hash_from_spectrogram(self):
+        # Convert spectrogram to decibel scale
         D_db = librosa.amplitude_to_db(self.spectrogram, ref=np.max)
-        fingerprint = self.extract_fingerprint(D_db)
-        self.hash_hex = self.compute_phash(fingerprint)
+        
+        # Normalize to a range suitable for image representation
+        D_db_normalized = np.interp(D_db, (D_db.min(), D_db.max()), (0, 255)).astype(np.uint8)
 
-    def extract_fingerprint(self, D_db, freq_bins=10, time_bins=10):
-        # Divide the spectrogram into frequency and time bins
-        freq_split = np.array_split(D_db, freq_bins, axis=0)
-        time_split = [np.array_split(segment, time_bins, axis=1) for segment in freq_split]
-
-        # Extract the max value from each segment to create a compact fingerprint
-        fingerprint = np.array([[np.max(segment) for segment in row] for row in time_split])
-        return fingerprint
-
-    def compute_phash(self, fingerprint):
-        # Convert the fingerprint matrix to an image-like array
-        fingerprint_image = np.interp(fingerprint, (fingerprint.min(), fingerprint.max()), (0, 255)).astype(np.uint8)
-        pil_image = Image.fromarray(fingerprint_image)
+        # Convert to image
+        pil_image = Image.fromarray(D_db_normalized)
+        
+        # Resize for consistent hashing
         pil_image_resized = pil_image.resize((32, 32), Image.Resampling.LANCZOS)
+        
+        # Convert to grayscale
         pil_image_grayscale = pil_image_resized.convert("L")
-        hash_value = imagehash.phash(pil_image_grayscale)
-        return str(hash_value)
+        
+        # Compute the perceptual hash
+        self.hash_hex = str(imagehash.phash(pil_image_grayscale))
 
     def get_hashed_features(self):
         return self.hash_hex
@@ -247,7 +283,7 @@ class Processing:
 # import librosa
 
 # # Example usage
-# audio_file_path = 'TuneTrack/Music/A Thousand Years(lyrics).wav'
+# audio_file_path = 'TuneTrack/Music/A Thousand Years(instruments).wav'
 
 # # Load the audio file using librosa
 # audio, sr = librosa.load(audio_file_path, sr=None)
