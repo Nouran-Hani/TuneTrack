@@ -38,7 +38,7 @@ class ResultCard(QWidget):
         self.similarityBar.setMaximum(100)
         self.similarityBar.setValue(similarity)  # passed value
         self.similarityResult = QLabel(f"{similarity}%")
-        self.playButton = QPushButton(QIcon("Photos/Button Play.png"), "")
+        self.playButton = QPushButton(QIcon("TuneTrack/Photos/Button Play.png"), "")
 
     def createLayout(self):
         self.mainLayout = QHBoxLayout()
@@ -181,7 +181,7 @@ class ResultCard(QWidget):
         if self.player:
             self.player.stop()
             self.is_playing = False
-            self.playButton.setIcon(QIcon("Photos/Button Play.png"))
+            self.playButton.setIcon(QIcon("TuneTrack/Photos/Button Play.png"))
     
     def toggle_playback(self):
         # Stop all other cards' playback
@@ -190,9 +190,9 @@ class ResultCard(QWidget):
             main_window.stop_all_cards_except(self)
 
         # Construct the full path for the audio file
-        base_path = "Music/"
+        base_path = "TuneTrack/Music/"
         file_name = self.original_file_name
-        extensions = ['.wav']
+        extensions = ['.wav','.mp3']
         found = False
 
         for ext in extensions:
@@ -212,11 +212,11 @@ class ResultCard(QWidget):
         if self.is_playing:
             self.player.pause()
             self.is_playing = False
-            self.playButton.setIcon(QIcon("Photos/Button Play.png"))
+            self.playButton.setIcon(QIcon("TuneTrack/Photos/Button Play.png"))
         else:
             self.player.play()
             self.is_playing = True
-            self.playButton.setIcon(QIcon("Photos/Button Pause.png"))
+            self.playButton.setIcon(QIcon("TuneTrack/Photos/Button Pause.png"))
 
 
 

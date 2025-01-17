@@ -120,7 +120,7 @@ class TuneTrackApp(QMainWindow):
         # Loop through the array of tuples (songName, similarity)
         for idx, (song_file_name, similarity) in enumerate(song_similarity_data):
             song_name, artist, clean_name = parse_song_name(song_file_name)
-            cover_path = f"Photos/Covers/{clean_name}.jpeg"
+            cover_path = f"TuneTrack/Photos/Covers/{clean_name}.jpeg"
 
             # Update the best match
             if idx == 0:

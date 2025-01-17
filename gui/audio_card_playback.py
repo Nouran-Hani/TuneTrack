@@ -34,7 +34,7 @@ class AudioCardPlayback(QWidget):
         self.card_layout.setSpacing(15)
 
         self.play_button = QPushButton()
-        self.play_button.setIcon(QIcon('Photos/Button Play.png'))
+        self.play_button.setIcon(QIcon('TuneTrack/Photos/Button Play.png'))
         self.play_button.setIconSize(QSize(40, 40))
         self.card_layout.addWidget(self.play_button, alignment=Qt.AlignCenter)
 
