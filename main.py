@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, \
-    QSpacerItem, QSlider, QSpinBox
+    QSpacerItem, QSlider, QSpinBox, QPushButton
 from gui.audio_card_upload import AudioCardUpload
 from gui.audio_card_playback import AudioCardPlayback
 from gui.Results import ResultCard
@@ -37,6 +37,7 @@ class TuneTrackApp(QMainWindow):
         self.audioCard1 = AudioCardUpload("Audio 1")
         self.audioCard2 = AudioCardUpload("Audio 2")
 
+        self.trackButton = QPushButton("Find")
 
         self.weightSlider = QSlider(Qt.Horizontal)
         self.audio1Weight = QLabel("50")
@@ -71,7 +72,7 @@ class TuneTrackApp(QMainWindow):
             }
 
             clean_name = song_file_name.strip()
-            
+
             # square brackets format
             square_bracket_match = re.search(r"\[\s*(music|vocals|instrument|instruments|lyrics)\s*\]", song_file_name, re.IGNORECASE)
             if square_bracket_match:
@@ -80,18 +81,18 @@ class TuneTrackApp(QMainWindow):
                 song_type = type_keywords.get(raw_type, "Full")
                 return song_file_name.strip(), song_type, clean_name
 
-            # underscore format 
+            # underscore format
             underscore_match = re.match(r"^([^_]+)_(.+?)_([^_]+)$", song_file_name)
             if underscore_match:
                 group_name = underscore_match.group(1).strip()
                 song_name = underscore_match.group(2).strip()
-                raw_type = underscore_match.group(3).strip().lower()                
+                raw_type = underscore_match.group(3).strip().lower()
                 clean_name = song_name
                 clean_name = clean_name.strip()
                 clean_name = clean_name.title()
                 song_display = f"{group_name}_{song_name} ({raw_type})"
                 song_type = type_keywords.get(raw_type, "Full Song")
-                
+
                 return song_display, song_type, clean_name
 
             # single underscore format
@@ -123,26 +124,26 @@ class TuneTrackApp(QMainWindow):
 
             # Update the best match
             if idx == 0:
-                self.bestMatchCard.updateCard(rank="1", songName=song_name, singerName=artist, 
+                self.bestMatchCard.updateCard(rank="1", songName=song_name, singerName=artist,
                                             similarity=similarity, file=song_file_name, cover_path=cover_path)
             elif idx == 1:
-                self.MatchCard1.updateCard(rank="2", songName=song_name, singerName=artist, 
+                self.MatchCard1.updateCard(rank="2", songName=song_name, singerName=artist,
                                         similarity=similarity, file=song_file_name, cover_path=cover_path)
             elif idx == 2:
-                self.MatchCard2.updateCard(rank="3", songName=song_name, singerName=artist, 
+                self.MatchCard2.updateCard(rank="3", songName=song_name, singerName=artist,
                                         similarity=similarity, file=song_file_name, cover_path=cover_path)
             elif idx == 3:
-                self.MatchCard3.updateCard(rank="4", songName=song_name, singerName=artist, 
+                self.MatchCard3.updateCard(rank="4", songName=song_name, singerName=artist,
                                         similarity=similarity, file=song_file_name, cover_path=cover_path)
             elif idx == 4:
-                self.MatchCard4.updateCard(rank="5", songName=song_name, singerName=artist, 
+                self.MatchCard4.updateCard(rank="5", songName=song_name, singerName=artist,
                                         similarity=similarity, file=song_file_name, cover_path=cover_path)
 
     def stop_all_cards_except(self, active_card):
         for card in [self.bestMatchCard, self.MatchCard1, self.MatchCard2, self.MatchCard3, self.MatchCard4]:
             if card is not active_card:
                 card.stop_playback()
-                
+
 
 
     def createLayout(self):
@@ -156,6 +157,7 @@ class TuneTrackApp(QMainWindow):
         uploadLayout = QHBoxLayout()
 
         uploadLayout.addWidget(self.audioCard1)
+        uploadLayout.addWidget(self.trackButton)
         uploadLayout.addWidget(self.audioCard2)
 
         weightLayout = QHBoxLayout()
@@ -205,6 +207,27 @@ class TuneTrackApp(QMainWindow):
         self.slogan.setStyleSheet(slogan)
         self.bestMatchLabel.setAlignment(Qt.AlignCenter)
 
+        self.audioCard1.setMaximumWidth(int((self.width()/2)-50))
+        self.audioCard2.setMaximumWidth(int((self.width()/2)-50))
+        self.audioCard1.setFixedWidth(int((self.width()/2)))
+        self.audioCard2.setFixedWidth(int((self.width()/2)))
+
+        self.trackButton.setStyleSheet( """
+                                        QPushButton {
+                                            background-color: #FE7191;
+                                            color: White;
+                                            font-size: 22px;
+                                            font-weight:Bold;
+                                            border-radius: 7px;
+                                            padding: 5px 15px;
+                                        }
+                                        QPushButton:hover {
+                                            color:#FE7191;
+                                            background-color: #EFEFEF;
+                                        }
+                                        """)
+        self.trackButton.setFixedSize(100,50)
+
         self.bestMatchLabel.setStyleSheet(bestMatchLabel)
         self.audio1Weight.setStyleSheet(NumberLabelPink)
         self.audio2Weight.setStyleSheet(NumberLabelWhite)
@@ -223,6 +246,8 @@ class TuneTrackApp(QMainWindow):
         )
         self.audioCard2.upload_button.clicked.connect(self.load_audio2)
         self.weightSlider.sliderReleased.connect(self.updateWeightLabels)
+
+        self.trackButton.clicked.connect(self.processing)
 
     def updateSliderBasedOnUploads(self):
         if self.audio1 is not None and self.audio2 is None:
@@ -266,7 +291,7 @@ class TuneTrackApp(QMainWindow):
         self.hashed_features = self.process.get_hashed_features()
         check = SimilarityCheck()
         check.set_hashed_song(self.hashed_features)
-        similar = check.get_similarities() 
+        similar = check.get_similarities()
         self.updateResults(similar)
         pprint.pprint(similar)
 
@@ -277,7 +302,18 @@ class TuneTrackApp(QMainWindow):
         self.audio2Weight.setText(f"{100 - value}")
         if self.audio1 is not None or self.audio2 is not None:
             self.setting_audio()
-            self.processing()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)  # Ensure the base class handles the event properly
+
+        new_width = self.width() // 2  # Integer division ensures no floating-point values
+
+        # Ensure both widgets take up exactly half the width
+        self.audioCard1.setMinimumWidth(360)
+        self.audioCard1.setMaximumWidth(new_width)
+
+        self.audioCard2.setMinimumWidth(360)
+        self.audioCard2.setMaximumWidth(new_width)
 
 
 if __name__ == "__main__":
