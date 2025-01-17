@@ -69,6 +69,8 @@ class TuneTrackApp(QMainWindow):
                 'music': 'Instruments',
                 'full': 'Full Song',
                 'original': 'Full Song'
+                
+                
             }
 
             clean_name = song_file_name.strip()
@@ -78,7 +80,7 @@ class TuneTrackApp(QMainWindow):
             if square_bracket_match:
                 clean_name = re.sub(r"\[\s*(music|vocals|instrument|instruments|lyrics)\s*\]", "", song_file_name, flags=re.IGNORECASE).strip()
                 raw_type = square_bracket_match.group(1).strip().lower()
-                song_type = type_keywords.get(raw_type, "Full")
+                song_type = type_keywords.get(raw_type, "Full Song")
                 return song_file_name.strip(), song_type, clean_name
 
             # underscore format
@@ -101,7 +103,7 @@ class TuneTrackApp(QMainWindow):
                 clean_name = single_underscore_match.group(1).strip()
                 song_display = clean_name + f" ({single_underscore_match.group(2).strip()})"
                 raw_type = single_underscore_match.group(2).strip().lower()
-                song_type = type_keywords.get(raw_type, "Full")
+                song_type = type_keywords.get(raw_type, "Full Song")
                 return song_display, song_type, clean_name
 
             # Parentheses format
@@ -110,10 +112,10 @@ class TuneTrackApp(QMainWindow):
                 clean_name = Parentheses_match.group(1).strip()
                 song_display = clean_name + f" ({Parentheses_match.group(2).strip()})"
                 raw_type = Parentheses_match.group(2).strip().lower()
-                song_type = type_keywords.get(raw_type, "Full")
+                song_type = type_keywords.get(raw_type, "Full Song")
                 return song_display, song_type, clean_name
 
-            return song_file_name.strip(), "Full", clean_name
+            return song_file_name.strip(), "Full Song", clean_name
 
 
         """Update the result cards with new song similarity data."""
