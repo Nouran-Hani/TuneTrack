@@ -9,7 +9,7 @@ class SimilarityCheck:
         Initialize the song database by loading data from a JSON file.
         :param json_file_path: Path to the JSON file containing song data.
         """
-        self.json_file_path = 'TuneTrack/core/spectrohash.json'
+        self.json_file_path = 'TuneTrack/core/spectrohash2.json'
         self.hashed = None
         self.songs = []
         self.similarities = []
@@ -87,14 +87,14 @@ class SimilarityCheck:
         return self.similarities[:5] # Return the top 5 most similar songs
 
 
-# Example Usage:
-song_db = SimilarityCheck()
+# # Example Usage:
+# song_db = SimilarityCheck()
 
-query_song_path = "d5d5cfcdc1c9c180"
-sorted_songs = song_db.set_hashed_song(query_song_path)
-sort = song_db.get_similarities()
+# query_song_path = "d5d5cfcdc1c9c180"
+# sorted_songs = song_db.set_hashed_song(query_song_path)
+# sort = song_db.get_similarities()
 
-# Step 3: Output the sorted songs and their similarity
-print("Similarity Results:")
-for song_title, similarity in sort:
-    print(f"Song: {song_title}, Similarity Index: {similarity}")
+# # Step 3: Output the sorted songs and their similarity
+# print("Similarity Results:")
+# for song_title, similarity in sort:
+#     print(f"Song: {song_title}, Similarity Index: {similarity}")

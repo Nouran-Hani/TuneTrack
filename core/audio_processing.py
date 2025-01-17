@@ -283,13 +283,13 @@ class Processing:
 # import librosa
 
 # # Example usage
-# audio_file_path = 'TuneTrack/Music/A Thousand Years(instruments).wav'
+# audio_file_path = 'TuneTrack/Music/Group19_ShadowOfMine_Full.wav'
 
 # # Load the audio file using librosa
-# audio, sr = librosa.load(audio_file_path, sr=None)
+# audio, sr = librosa.load(audio_file_path, sr=44100)
 
 # # Create an instance of the Processing class with the loaded audio
-# audio_processing = Processing(audio=audio, title="A Thousand Years(instruments)")
+# audio_processing = Processing(audio=audio, title="Group19_ShadowOfMine_Full")
 
 # # Get the perceptual hash of the spectrogram
 # hashed_features = audio_processing.get_hashed_features()

@@ -9,6 +9,7 @@ from core.load import Load
 from core.audio_processing import Processing
 from core.table import SimilarityCheck
 import re
+import pprint
 
 class TuneTrackApp(QMainWindow):
     def __init__(self):
@@ -267,7 +268,7 @@ class TuneTrackApp(QMainWindow):
         check.set_hashed_song(self.hashed_features)
         similar = check.get_similarities() 
         self.updateResults(similar)
-        print(similar)
+        pprint.pprint(similar)
 
     def updateWeightLabels(self):
         self.audio = None
